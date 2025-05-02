@@ -1,17 +1,15 @@
 <?php
 
-namespace TDW\App\Entity;
+namespace TDW\ACiencia\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use TDW\ACiencia\Entity\Entity;
 
-
-
 #[ORM\Entity]
 #[ORM\Table(name: 'asociacion')]
-class Asociacion
+class Asociacion implements \JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -73,5 +71,17 @@ class Asociacion
     public function removeEntidad(Entity $entidad): void
     {
         $this->entidades->removeElement($entidad);
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->getId(),
+            'nombre' => $this->getNombre(),
+            'url' => $this->getUrl(),
+            'entidades' => $this->getEntidades()->map(
+                fn(Entity $e) => $e->getId()
+            )->toArray()
+        ];
     }
 }

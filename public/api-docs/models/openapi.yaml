@@ -23,6 +23,9 @@ tags:
     description: User management
   - name: '💡 Products'
     description: Product management
+  - name: '🏛️ Asociaciones'
+    description: Asociación management
+
 
 paths:
   '/access_token':
@@ -538,6 +541,81 @@ paths:
         '204':
           $ref: '#/components/responses/Response_Options'
 
+  /asociaciones:
+    get:
+      tags:
+        - '🏛️ Asociaciones'
+      summary: Listar todas las asociaciones
+      operationId: getAsociaciones
+      responses:
+        '200':
+          description: Lista de asociaciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Asociacion'
+
+    post:
+      tags:
+        - '🏛️ Asociaciones'
+      summary: Crear una nueva asociación
+      operationId: postAsociacion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AsociacionInput'
+      responses:
+        '201':
+          description: Asociación creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asociacion'
+
+  /asociaciones/{id}:
+    get:
+      tags:
+        - '🏛️ Asociaciones'
+      summary: Obtener asociación por ID
+      operationId: getAsociacion
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Asociación encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asociacion'
+        '404':
+          $ref: '#/components/responses/Response_404'
+
+    delete:
+      tags:
+        - '🏛️ Asociaciones'
+      summary: Eliminar asociación por ID
+      operationId: deleteAsociacion
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Asociación eliminada
+        '404':
+          $ref: '#/components/responses/Response_404'
+
+
 components:
   schemas:
     User:
@@ -718,7 +796,32 @@ components:
         message:
           description: Response message
           type: string
+    Asociacion:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombre:
+          type: string
+        url:
+          type: string
+        entidades:
+          type: array
+          items:
+            type: integer
 
+    AsociacionInput:
+      type: object
+      required:
+        - nombre
+        - url
+      properties:
+        nombre:
+          type: string
+        url:
+          type: string
+  
+  
   responses:
     Response_Options:
       description: '`ALLOW` header &lt;Response body is empty&gt;'

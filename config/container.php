@@ -1,6 +1,7 @@
 <?php
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Lcobucci\Clock\SystemClock;
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key\InMemory;
@@ -24,7 +25,6 @@ return [
 
     App::class => function (ContainerInterface $container) {
         AppFactory::setContainer($container);
-
         return AppFactory::create();
     },
 
@@ -45,13 +45,15 @@ return [
 
     BasePathMiddleware::class => function (ContainerInterface $container) {
         $app = $container->get(App::class);
-
         return new BasePathMiddleware($app);
     },
 
+    // Doctrine EntityManager
     EntityManager::class => DoctrineConnector::getEntityManager(),
 
-    // And add this entry
+    EntityManagerInterface::class => fn(ContainerInterface $c) => $c->get(EntityManager::class),
+
+    // JWT Auth service
     JwtAuth::class => function (ContainerInterface $container) {
         $config = $container->get(Configuration::class);
 
@@ -63,7 +65,6 @@ return [
         $secretPhrase = $config->getString('app.secret');
 
         $jwtConfig = Lcobucci\JWT\Configuration::forAsymmetricSigner(
-            // You may use RSA or ECDSA and all their variations (256, 384, and 512) and EdDSA over Curve25519
             new Signer\Rsa\Sha256(),
             InMemory::file($privateKeyFile),
             InMemory::base64Encoded($secretPhrase)
