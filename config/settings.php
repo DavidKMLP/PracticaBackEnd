@@ -72,5 +72,23 @@ $settings['jwt'] = [
 //if (defined('APP_ENV')) {
 //    require __DIR__ . basename(APP_ENV) . '.php';
 //}
+// Database (Doctrine) settings
+$settings['doctrine'] = [
+    'meta' => [
+        'entity_path' => [__DIR__ . '/../src/Entity'],
+        'auto_generate_proxies' => true,
+        'proxy_dir' => __DIR__ . '/../var/doctrine/proxies',
+        'cache' => null,
+    ],
+    'connection' => [
+        'driver'   => getenv('DATABASE_DRIVER'),
+        'host'     => getenv('DATABASE_HOST'),
+        'port'     => getenv('DATABASE_PORT'),
+        'dbname'   => getenv('DATABASE_NAME'),
+        'user'     => getenv('DATABASE_USER'),
+        'password' => getenv('DATABASE_PASSWD'),
+        'charset'  => getenv('DATABASE_CHARSET'),
+    ]
+];
 
 return $settings;
