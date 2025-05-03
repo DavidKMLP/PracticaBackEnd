@@ -84,4 +84,33 @@ final class AsociacionController
 
         return $response->withStatus(204);
     }
+
+    public function update(Request $request, Response $response, array $args): Response
+    {
+        $asociacion = $this->entityManager
+            ->getRepository(Asociacion::class)
+            ->find((int) $args['id']);
+
+        if ($asociacion === null) {
+            return $response->withStatus(404);
+        }
+
+        $data = json_decode($request->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
+
+        if (isset($data['nombre'])) {
+            $asociacion->setNombre($data['nombre']);
+        }
+
+        if (isset($data['url'])) {
+            $asociacion->setUrl($data['url']);
+        }
+
+        $this->entityManager->flush();
+        return $response
+        ->withStatus(209)
+        ->withHeader('Content-Type', 'application/json');
+    }
+
+
+    
 }

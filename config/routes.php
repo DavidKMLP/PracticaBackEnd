@@ -42,6 +42,7 @@ return function (App $app) {
             $group->get('/{id:[0-9]+}', AsociacionController::class . ':show');
             $group->post('', AsociacionController::class . ':create');
             $group->delete('/{id:[0-9]+}', AsociacionController::class . ':delete');
+            $group->put('/{id:[0-9]+}', AsociacionController::class . ':update');
         });
     });    
 };
