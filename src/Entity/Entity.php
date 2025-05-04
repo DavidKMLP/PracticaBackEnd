@@ -15,9 +15,9 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\ArrayShape;
 use ReflectionObject;
 
-#[ORM\Entity, ORM\Table(name: "entities")]
+#[ORM\Entity, ORM\Table(name: "entidad")]
 #[ORM\UniqueConstraint(name: "Entity_name_uindex", columns: [ "name" ])]
-class Entity extends Element
+class Entidad extends Element
 {
     /* Set of people participating in the entity */
     #[ORM\ManyToMany(targetEntity: Person::class, inversedBy: "entities")]
