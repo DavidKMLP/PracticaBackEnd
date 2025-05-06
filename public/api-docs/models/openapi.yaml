@@ -640,15 +640,28 @@ paths:
       summary: Crear una nueva asociación
       tags:
       - 🏛️ Asociaciones
+
+    options:
+      tags:
+        - 🏛️ Asociaciones
+      summary: Provides the list of HTTP supported methods.
+      description: Return a `Allow` header with a comma separated list of HTTP supported methods.
+      operationId: optionsAsociaciones
+      responses:
+        '204':
+          description: '`Allow` header <Response body is empty>'
+          headers:
+            Allow:
+              $ref: '#/components/headers/Allow'
   /asociaciones/{id}:
     delete:
       operationId: deleteAsociacion
       parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '204':
           description: Asociación eliminada
@@ -656,35 +669,37 @@ paths:
           $ref: '#/components/responses/Response_404'
       summary: Eliminar asociación por ID
       tags:
-      - 🏛️ Asociaciones
+        - 🏛️ Asociaciones
+
     get:
       operationId: getAsociacion
       parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
+          description: Asociación encontrada
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Asociacion'
-          description: Asociación encontrada
         '404':
           $ref: '#/components/responses/Response_404'
       summary: Obtener asociación por ID
       tags:
-      - 🏛️ Asociaciones
+        - 🏛️ Asociaciones
+
     put:
       operationId: updateAsociacion
       parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       requestBody:
         content:
           application/json:
@@ -693,16 +708,141 @@ paths:
         required: true
       responses:
         '209':
+          description: Asociación actualizada
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Asociacion'
-          description: Asociación actualizada
         '404':
           $ref: '#/components/responses/Response_404'
       summary: Modificar asociación por ID
       tags:
-      - 🏛️ Asociaciones
+        - 🏛️ Asociaciones
+
+  /asociaciones/nombre/{nombre}:
+    get:
+      tags:
+        - 🏛️ Asociaciones
+      summary: Verifica si el nombre de la asociación existe
+      description: Devuelve 204 si la asociación existe
+      operationId: existsAsociacionByName
+      parameters:
+        - name: nombre
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Asociación encontrada (sin cuerpo)
+        '404':
+          $ref: '#/components/responses/Response_404'
+
+  /asociaciones/{asociacionId}/{elementType}:
+    get:
+      tags:
+        - 🏛️ Asociaciones
+      summary: Listar elementos relacionados a una asociación
+      operationId: getAsociacionElements
+      parameters:
+        - name: asociacionId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: elementType
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - entities
+      responses:
+        '200':
+          description: Array de entidades relacionadas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  entities:
+                    description: Array de entidades
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Entity'
+        '404':
+          $ref: '#/components/responses/Response_404'
+
+    options:
+      tags:
+        - 🏛️ Asociaciones
+      summary: Provides the list of HTTP supported methods.
+      description: Return a `Allow` header with a comma separated list of HTTP supported methods.
+      operationId: optionsAsociacionElements
+      responses:
+        '204':
+          description: '`Allow` header <Response body is empty>'
+          headers:
+            Allow:
+              $ref: '#/components/headers/Allow'
+
+  /asociaciones/{asociacionId}/{elementType}/{operationType}/{elementId}:
+    put:
+      tags:
+        - 🏛️ Asociaciones
+      summary: Añadir o eliminar una relación entre asociación y entidad
+      operationId: manageAsociacionEntityRelation
+      parameters:
+        - name: asociacionId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: elementType
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - entities
+        - name: operationType
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - add
+              - rem
+        - name: elementId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '209':
+          description: Asociación actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asociacion'
+        '404':
+          $ref: '#/components/responses/Response_404'
+        '406':
+          $ref: '#/components/responses/Response_406'
+
+    options:
+      tags:
+        - 🏛️ Asociaciones
+      summary: Provides the list of HTTP supported methods.
+      description: Return a `Allow` header with a comma separated list of HTTP supported methods.
+      operationId: optionsAsociacionRel
+      responses:
+        '204':
+          description: '`Allow` header <Response body is empty>'
+          headers:
+            Allow:
+              $ref: '#/components/headers/Allow'
+
   /products:
     get:
       description: Returns all products from the system that the user has access to.

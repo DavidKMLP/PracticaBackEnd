@@ -14,10 +14,11 @@ use Doctrine\Common\Collections\{ ArrayCollection, Collection };
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\ArrayShape;
 use ReflectionObject;
+use TDW\ACiencia\Entity\Asociacion;
 
-#[ORM\Entity, ORM\Table(name: "entidad")]
+#[ORM\Entity, ORM\Table(name: "entities")]
 #[ORM\UniqueConstraint(name: "Entity_name_uindex", columns: [ "name" ])]
-class Entidad extends Element
+class Entity extends Element
 {
     /* Set of people participating in the entity */
     #[ORM\ManyToMany(targetEntity: Person::class, inversedBy: "entities")]
@@ -30,6 +31,10 @@ class Entidad extends Element
     #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: "entities")]
     #[ORM\OrderBy([ "id" => "ASC" ])]
     protected Collection $products;
+
+    /* Añadido para la relacion inversa con Asociacion*/
+    #[ORM\ManyToMany(targetEntity: Asociacion::class, mappedBy: 'entidades')]
+    private Collection $asociaciones;
 
     /**
      * Entity constructor.
@@ -46,6 +51,7 @@ class Entidad extends Element
         ?DateTime $deathDate = null,
         ?string $imageUrl = null,
         ?string $wikiUrl = null
+        
     ) {
         parent::__construct($name, $birthDate, $deathDate, $imageUrl, $wikiUrl);
         /* Initialize persons collection */
