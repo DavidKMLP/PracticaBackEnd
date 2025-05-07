@@ -67,8 +67,8 @@ components:
       required: true
       schema:
         enum:
-        - entities
-        - persons
+          - entities
+          - persons
         type: string
     elementTextParam:
       description: Elements containing the text
@@ -107,8 +107,8 @@ components:
       required: true
       schema:
         enum:
-        - add
-        - rem
+          - add
+          - rem
         type: string
     orderParam:
       allowEmptyValue: false
@@ -118,8 +118,8 @@ components:
       required: false
       schema:
         enum:
-        - id
-        - name
+          - id
+          - name
         type: string
     orderingParam:
       allowEmptyValue: false
@@ -129,8 +129,8 @@ components:
       required: false
       schema:
         enum:
-        - ASC
-        - DESC
+          - ASC
+          - DESC
         type: string
     personId:
       description: ID of person
@@ -204,7 +204,7 @@ components:
                 maxLength: 2047
                 type: string
             required:
-            - name
+              - name
             type: object
       description: '`Element` data'
     LoginRequestBody:
@@ -220,15 +220,15 @@ components:
                 default: reader
                 description: Requested scopes
                 enum:
-                - reader
-                - reader+writer
+                  - reader
+                  - reader+writer
                 type: string
               username:
                 description: User name
                 type: string
             required:
-            - username
-            - password
+              - username
+              - password
             type: object
         application/x-www-form-urlencoded:
           schema:
@@ -240,15 +240,15 @@ components:
               scope:
                 description: Requested scopes
                 enum:
-                - reader
-                - reader+writer
+                  - reader
+                  - reader+writer
                 type: string
               username:
                 description: User name
                 type: string
             required:
-            - username
-            - password
+              - username
+              - password
             type: object
       description: Registered **username** and **password**
       required: true
@@ -257,10 +257,10 @@ components:
         application/json:
           schema:
             examples:
-            - email: miw.etsisi@upm.es
-              password: MiW_User_password
-              role: READER
-              username: miw.etsisi
+              - email: miw.etsisi@upm.es
+                password: MiW_User_password
+                role: READER
+                username: miw.etsisi
             properties:
               email:
                 description: new User email
@@ -273,9 +273,9 @@ components:
               role:
                 description: new User role
                 enum:
-                - INACTIVE
-                - READER
-                - WRITER
+                  - INACTIVE
+                  - READER
+                  - WRITER
                 type: string
               username:
                 description: new User name
@@ -288,9 +288,9 @@ components:
         application/json:
           schema:
             examples:
-            - email: User_email@example.com
-              password: User_password
-              username: username
+              - email: User_email@example.com
+                password: User_password
+                username: username
             properties:
               email:
                 description: User email
@@ -304,9 +304,9 @@ components:
                 description: User name
                 type: string
             required:
-            - username
-            - email
-            - password
+              - username
+              - email
+              - password
             type: object
       description: '`User` data'
   responses:
@@ -342,8 +342,8 @@ components:
         url:
           type: string
       required:
-      - nombre
-      - url
+        - nombre
+        - url
       type: object
     Element:
       properties:
@@ -372,37 +372,37 @@ components:
           maxLength: 2047
           type: string
       required:
-      - name
+        - name
       type: object
     Entity:
       allOf:
-      - $ref: '#/components/schemas/Element'
-      - properties:
-          persons:
-            description: Array of Person Ids
-            items:
-              type: integer
-            type: array
-          products:
-            description: Array of Product Ids
-            items:
-              type: integer
-            type: array
-        type: object
+        - $ref: '#/components/schemas/Element'
+        - properties:
+            persons:
+              description: Array of Person Ids
+              items:
+                type: integer
+              type: array
+            products:
+              description: Array of Product Ids
+              items:
+                type: integer
+              type: array
+          type: object
       examples:
-      - entity:
-          birthDate: '1936-07-18'
-          deathDate: '1939-04-01'
-          id: 2
-          imageUrl: https://image02.example.com/Entity02.png
-          name: Entity02
-          persons:
-          - 3
-          - 17
-          products:
-          - 1
-          - 7
-          wikiUrl: https://wiki02.example.com/Entity02
+        - entity:
+            birthDate: '1936-07-18'
+            deathDate: '1939-04-01'
+            id: 2
+            imageUrl: https://image02.example.com/Entity02.png
+            name: Entity02
+            persons:
+              - 3
+              - 17
+            products:
+              - 1
+              - 7
+            wikiUrl: https://wiki02.example.com/Entity02
     Message:
       description: HTTP response message
       properties:
@@ -416,68 +416,68 @@ components:
       type: object
     Person:
       allOf:
-      - $ref: '#/components/schemas/Element'
-      - properties:
-          entities:
-            description: Array of Entity Ids
-            items:
-              type: integer
-            type: array
-          products:
-            description: Array of Product Ids
-            items:
-              type: integer
-            type: array
-        type: object
+        - $ref: '#/components/schemas/Element'
+        - properties:
+            entities:
+              description: Array of Entity Ids
+              items:
+                type: integer
+              type: array
+            products:
+              description: Array of Product Ids
+              items:
+                type: integer
+              type: array
+          type: object
       examples:
-      - person:
-          birthDate: '2017-07-17'
-          deathDate: '2701-01-07'
-          entities:
-          - 2023
-          id: 17
-          imageUrl: https://image17.example.com/Person17.png
-          name: Person17
-          products:
-          - 1
-          - 7
-          wikiUrl: https://wiki17.example.com/Person17
+        - person:
+            birthDate: '2017-07-17'
+            deathDate: '2701-01-07'
+            entities:
+              - 2023
+            id: 17
+            imageUrl: https://image17.example.com/Person17.png
+            name: Person17
+            products:
+              - 1
+              - 7
+            wikiUrl: https://wiki17.example.com/Person17
     Product:
       allOf:
-      - $ref: '#/components/schemas/Element'
-      - properties:
-          entities:
-            description: Array of Entity Ids
-            items:
-              type: integer
-            type: array
-          persons:
-            description: Array of Person Ids
-            items:
-              type: integer
-            type: array
-        type: object
+        - $ref: '#/components/schemas/Element'
+        - properties:
+            entities:
+              description: Array of Entity Ids
+              items:
+                type: integer
+              type: array
+            persons:
+              description: Array of Person Ids
+              items:
+                type: integer
+              type: array
+          type: object
       examples:
-      - product:
-          birthDate: '2020-01-01'
-          deathDate: '2250-12-25'
-          entities:
-          - 2
-          id: 7
-          imageUrl: https://image07.example.com/Product07.png
-          name: Product07
-          persons:
-          - 3
-          - 17
-          wikiUrl: https://wiki07.example.com/Product07
+        - product:
+            birthDate: '2020-01-01'
+            deathDate: '2250-12-25'
+            entities:
+              - 2
+            id: 7
+            imageUrl: https://image07.example.com/Product07.png
+            name: Product07
+            persons:
+              - 3
+              - 17
+            wikiUrl: https://wiki07.example.com/Product07
     User:
       description: ''
       examples:
-      - user:
-          email: miw.etsisi@upm.es
-          id: 1508
-          role: INACTIVE
-          username: user1508
+        - user:
+            email: miw.etsisi@upm.es
+            id: 1508
+            role: INACTIVE
+            username: user1508
       properties:
         email:
           description: User email
@@ -491,9 +491,9 @@ components:
         role:
           description: User role
           enum:
-          - INACTIVE
-          - READER
-          - WRITER
+            - INACTIVE
+            - READER
+            - WRITER
           type: string
         username:
           description: User name
@@ -544,7 +544,7 @@ paths:
               $ref: '#/components/headers/Allow'
       summary: Provides the list of HTTP supported methods.
       tags:
-      - 🔐 Login
+        - 🔐 Login
     post:
       description: Returns api authorization token (JWT).
       operationId: api_post_login
@@ -604,9 +604,9 @@ paths:
           description: Error response
       summary: Returns api token
       tags:
-      - 🔐 Login
+        - 🔐 Login
     servers:
-    - url: /
+      - url: /
   /asociaciones:
     get:
       operationId: getAsociaciones
@@ -621,7 +621,7 @@ paths:
           description: Lista de asociaciones
       summary: Listar todas las asociaciones
       tags:
-      - 🏛️ Asociaciones
+        - 🏛️ Asociaciones
     post:
       operationId: postAsociacion
       requestBody:
@@ -639,7 +639,7 @@ paths:
           description: Asociación creada
       summary: Crear una nueva asociación
       tags:
-      - 🏛️ Asociaciones
+        - 🏛️ Asociaciones
 
     options:
       tags:
@@ -848,9 +848,9 @@ paths:
       description: Returns all products from the system that the user has access to.
       operationId: readProducts
       parameters:
-      - $ref: '#/components/parameters/elementTextParam'
-      - $ref: '#/components/parameters/orderParam'
-      - $ref: '#/components/parameters/orderingParam'
+        - $ref: '#/components/parameters/elementTextParam'
+        - $ref: '#/components/parameters/orderParam'
+        - $ref: '#/components/parameters/orderingParam'
       responses:
         '200':
           content:
@@ -871,7 +871,7 @@ paths:
           $ref: '#/components/responses/Response_404'
       summary: Retrieves the collection of Product resources.
       tags:
-      - 💡 Products
+        - 💡 Products
     options:
       description: Return a `Allow` header with a comma separated list of HTTP supported
         methods.
@@ -884,7 +884,7 @@ paths:
               $ref: '#/components/headers/Allow'
       summary: Provides the list of HTTP supported methods.
       tags:
-      - 💡 Products
+        - 💡 Products
     post:
       description: Creates a new product
       operationId: createProduct
@@ -909,17 +909,17 @@ paths:
         '422':
           $ref: '#/components/responses/Response_422'
       security:
-      - MiWApiSecurity:
-        - writer
+        - MiWApiSecurity:
+            - writer
       summary: Creates a Product resource.
       tags:
-      - 💡 Products
+        - 💡 Products
   /products/productname/{productname}:
     get:
       description: Returns status code 204 if `productname` exists.
       operationId: existsProduct
       parameters:
-      - $ref: '#/components/parameters/productName'
+        - $ref: '#/components/parameters/productName'
       responses:
         '204':
           description: Productname exists &lt;Response body is empty&gt;
@@ -927,7 +927,7 @@ paths:
           $ref: '#/components/responses/Response_404'
       summary: Determines if productname exists
       tags:
-      - 💡 Products
+        - 💡 Products
   /products/{productId}:
     delete:
       description: Deletes the product identified by `productId`.
@@ -940,11 +940,11 @@ paths:
         '404':
           $ref: '#/components/responses/Response_404'
       security:
-      - MiWApiSecurity:
-        - writer
+        - MiWApiSecurity:
+            - writer
       summary: Removes the Product resource.
       tags:
-      - 💡 Products
+        - 💡 Products
     get:
       description: Returns the product identified by `productId`.
       operationId: readProduct
@@ -962,7 +962,7 @@ paths:
           $ref: '#/components/responses/Response_404'
       summary: Retrieves a Product resource based on a single ID.
       tags:
-      - 💡 Products
+        - 💡 Products
     options:
       description: Return a `Allow` header with a comma separated list of HTTP supported
         methods.
@@ -975,14 +975,14 @@ paths:
               $ref: '#/components/headers/Allow'
       summary: Provides the list of HTTP supported methods.
       tags:
-      - 💡 Products
+        - 💡 Products
     parameters:
-    - $ref: '#/components/parameters/productId'
+      - $ref: '#/components/parameters/productId'
     put:
       description: Updates the product identified by `productId`.
       operationId: updateProduct
       parameters:
-      - $ref: '#/components/parameters/ifMatchParam'
+        - $ref: '#/components/parameters/ifMatchParam'
       requestBody:
         $ref: '#/components/requestBodies/ElementRequestBody'
       responses:
@@ -1002,11 +1002,11 @@ paths:
         '428':
           $ref: '#/components/responses/Response_428'
       security:
-      - MiWApiSecurity:
-        - writer
+        - MiWApiSecurity:
+            - writer
       summary: Updates the Product resource.
       tags:
-      - 💡 Products
+        - 💡 Products
   /products/{productId}/{elementType}:
     get:
       description: Returns the elements related to the product `productId`
@@ -1031,7 +1031,7 @@ paths:
           $ref: '#/components/responses/Response_404'
       summary: List of elements related to the product
       tags:
-      - 💡 Products
+        - 💡 Products
     options:
       description: Return a `Allow` header with a comma separated list of HTTP supported
         methods.
@@ -1044,10 +1044,10 @@ paths:
               $ref: '#/components/headers/Allow'
       summary: Provides the list of HTTP supported methods.
       tags:
-      - 💡 Products
+        - 💡 Products
     parameters:
-    - $ref: '#/components/parameters/productId'
-    - $ref: '#/components/parameters/elementProductRelParam'
+      - $ref: '#/components/parameters/productId'
+      - $ref: '#/components/parameters/elementProductRelParam'
   /products/{productId}/{elementType}/{operationType}/{elementId}:
     options:
       description: Return a `Allow` header with a comma separated list of HTTP supported
@@ -1058,12 +1058,12 @@ paths:
           $ref: '#/components/responses/Response_Options'
       summary: Provides the list of HTTP supported methods.
       tags:
-      - 💡 Products
+        - 💡 Products
     parameters:
-    - $ref: '#/components/parameters/productId'
-    - $ref: '#/components/parameters/elementProductRelParam'
-    - $ref: '#/components/parameters/operationParam'
-    - $ref: '#/components/parameters/elementId'
+      - $ref: '#/components/parameters/productId'
+      - $ref: '#/components/parameters/elementProductRelParam'
+      - $ref: '#/components/parameters/operationParam'
+      - $ref: '#/components/parameters/elementId'
     put:
       description: Establishes/Removes the relationship of the product with the element
       operationId: api_products_add_rem_element
@@ -1083,11 +1083,324 @@ paths:
         '406':
           $ref: '#/components/responses/Response_406'
       security:
-      - MiWApiSecurity:
-        - writer
+        - MiWApiSecurity:
+            - writer
       summary: Sets or remove the relationship product-element
       tags:
-      - 💡 Products
+        - 💡 Products
+  /persons:
+    get:
+      tags:
+        - 🧑‍🔬 Persons
+      summary: Get all persons
+      operationId: getPersons
+      responses:
+        '200':
+          description: Array of persons
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Person'
+
+    post:
+      tags:
+        - 🧑‍🔬 Persons
+      summary: Create a new person
+      operationId: postPerson
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Element'
+        required: true
+      responses:
+        '201':
+          description: Person created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+
+    options:
+      tags:
+        - 🧑‍🔬 Persons
+      summary: Allowed methods for /persons
+      operationId: optionsPersons
+      responses:
+        '204':
+          description: Allowed methods
+          headers:
+            Allow:
+              $ref: '#/components/headers/Allow'
+
+  /persons/{personId}:
+    get:
+      tags:
+        - 🧑‍🔬 Persons
+      summary: Get a person by ID
+      operationId: getPerson
+      parameters:
+        - $ref: '#/components/parameters/personId'
+      responses:
+        '200':
+          description: Person found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+        '404':
+          $ref: '#/components/responses/Response_404'
+
+    put:
+      tags:
+        - 🧑‍🔬 Persons
+      summary: Update a person
+      operationId: putPerson
+      parameters:
+        - $ref: '#/components/parameters/personId'
+        - $ref: '#/components/parameters/ifMatchParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Element'
+        required: true
+      responses:
+        '209':
+          description: Person updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+        '404':
+          $ref: '#/components/responses/Response_404'
+        '428':
+          $ref: '#/components/responses/Response_428'
+
+    delete:
+      tags:
+        - 🧑‍🔬 Persons
+      summary: Delete a person
+      operationId: deletePerson
+      parameters:
+        - $ref: '#/components/parameters/personId'
+      responses:
+        '204':
+          description: Person deleted
+        '404':
+          $ref: '#/components/responses/Response_404'
+
+    options:
+      tags:
+        - 🧑‍🔬 Persons
+      summary: Allowed methods for /persons/{personId}
+      operationId: optionsPerson
+      parameters:
+        - $ref: '#/components/parameters/personId'
+      responses:
+        '204':
+          description: Allowed methods
+          headers:
+            Allow:
+              $ref: '#/components/headers/Allow'
+
+  /persons/{personId}/entities:
+    get:
+      tags:
+        - 🧑‍🔬 Persons
+      summary: Get entities related to a person
+      operationId: getPersonEntities
+      parameters:
+        - $ref: '#/components/parameters/personId'
+      responses:
+        '200':
+          description: Related entities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Entity'
+        '404':
+          $ref: '#/components/responses/Response_404'
+
+  /persons/{personId}/products:
+    get:
+      tags:
+        - 🧑‍🔬 Persons
+      summary: Get products related to a person
+      operationId: getPersonProducts
+      parameters:
+        - $ref: '#/components/parameters/personId'
+      responses:
+        '200':
+          description: Related products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '404':
+          $ref: '#/components/responses/Response_404'
+
+  /entities:
+    get:
+      tags:
+        - 🧩 Entities
+      summary: Get all entities
+      operationId: getEntities
+      responses:
+        '200':
+          description: Array of entities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Entity'
+
+    post:
+      tags:
+        - 🧩 Entities
+      summary: Create a new entity
+      operationId: postEntity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Element'
+        required: true
+      responses:
+        '201':
+          description: Entity created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entity'
+
+    options:
+      tags:
+        - 🧩 Entities
+      summary: Allowed methods for /entities
+      operationId: optionsEntities
+      responses:
+        '204':
+          description: Allowed methods
+          headers:
+            Allow:
+              $ref: '#/components/headers/Allow'
+
+  /entities/{entityId}:
+    get:
+      tags:
+        - 🧩 Entities
+      summary: Get an entity by ID
+      operationId: getEntity
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+      responses:
+        '200':
+          description: Entity found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entity'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags:
+        - 🧩 Entities
+      summary: Update an entity
+      operationId: putEntity
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Element'
+        required: true
+      responses:
+        '209':
+          description: Entity updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entity'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      tags:
+        - 🧩 Entities
+      summary: Delete an entity
+      operationId: deleteEntity
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+      responses:
+        '204':
+          description: Entity deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    options:
+      tags:
+        - 🧩 Entities
+      summary: Allowed methods for /entities/{entityId}
+      operationId: optionsEntity
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+      responses:
+        '204':
+          description: Allowed methods
+          headers:
+            Allow:
+              $ref: '#/components/headers/Allow'
+
+  /entities/{entityId}/products:
+    get:
+      tags:
+        - 🧩 Entities
+      summary: Get products related to an entity
+      operationId: getEntityProducts
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+      responses:
+        '200':
+          description: Related products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /entities/{entityId}/persons:
+    get:
+      tags:
+        - 🧩 Entities
+      summary: Get persons related to an entity
+      operationId: getEntityPersons
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+      responses:
+        '200':
+          description: Related persons
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Person'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
   /users:
     get:
       description: Returns all users from the system that the user has access to.
@@ -1113,12 +1426,12 @@ paths:
         '404':
           $ref: '#/components/responses/Response_404'
       security:
-      - MiWApiSecurity:
-        - reader
-        - writer
+        - MiWApiSecurity:
+            - reader
+            - writer
       summary: Retrieves the collection of User resources.
       tags:
-      - 👥 Users
+        - 👥 Users
     options:
       description: Return a `Allow` header with a comma separated list of HTTP supported
         methods.
@@ -1131,7 +1444,7 @@ paths:
               $ref: '#/components/headers/Allow'
       summary: Provides the list of HTTP supported methods.
       tags:
-      - 👥 Users
+        - 👥 Users
     post:
       description: Creates a new INACTIVE user
       operationId: api_users_post
@@ -1178,13 +1491,13 @@ paths:
           $ref: '#/components/responses/Response_422'
       summary: Creates a User resource.
       tags:
-      - 👥 Users
+        - 👥 Users
   /users/username/{username}:
     get:
       description: Returns status code 204 if `username` exists.
       operationId: api_get_user_name
       parameters:
-      - $ref: '#/components/parameters/username'
+        - $ref: '#/components/parameters/username'
       responses:
         '204':
           description: Username exists &lt;Response body is empty&gt;
@@ -1192,7 +1505,7 @@ paths:
           $ref: '#/components/responses/Response_404'
       summary: Determines if username exists
       tags:
-      - 👥 Users
+        - 👥 Users
   /users/{userId}:
     delete:
       description: Deletes the user identified by `userId`.
@@ -1205,11 +1518,11 @@ paths:
         '404':
           $ref: '#/components/responses/Response_404'
       security:
-      - MiWApiSecurity:
-        - writer
+        - MiWApiSecurity:
+            - writer
       summary: Removes the User resource.
       tags:
-      - 👥 Users
+        - 👥 Users
     get:
       description: Returns the user identified by `userId`.
       operationId: api_users_get
@@ -1228,12 +1541,12 @@ paths:
         '404':
           $ref: '#/components/responses/Response_404'
       security:
-      - MiWApiSecurity:
-        - reader
-        - writer
+        - MiWApiSecurity:
+            - reader
+            - writer
       summary: Retrieves a User resource based on a single ID.
       tags:
-      - 👥 Users
+        - 👥 Users
     options:
       description: Return a `Allow` header with a comma separated list of HTTP supported
         methods.
@@ -1246,9 +1559,9 @@ paths:
               $ref: '#/components/headers/Allow'
       summary: Provides the list of HTTP supported methods.
       tags:
-      - 👥 Users
+        - 👥 Users
     parameters:
-    - $ref: '#/components/parameters/userId'
+      - $ref: '#/components/parameters/userId'
     put:
       description: 'Updates the user identified by `userId`.
 
@@ -1259,7 +1572,7 @@ paths:
         '
       operationId: api_users_put
       parameters:
-      - $ref: '#/components/parameters/ifMatchParam'
+        - $ref: '#/components/parameters/ifMatchParam'
       requestBody:
         $ref: '#/components/requestBodies/UpdateUserRequestBody'
       responses:
@@ -1278,19 +1591,19 @@ paths:
         '428':
           $ref: '#/components/responses/Response_428'
       security:
-      - MiWApiSecurity:
-        - reader
-        - writer
+        - MiWApiSecurity:
+            - reader
+            - writer
       summary: Updates the User resource.
       tags:
-      - 👥 Users
+        - 👥 Users
 servers:
-- description: TDW Production server (uses live data)
-  url: /api/v1
+  - description: TDW Production server (uses live data)
+    url: /api/v1
 tags:
-- description: User login
-  name: 🔐 Login
-- description: User management
-  name: 👥 Users
-- description: Product management
-  name: 💡 Products
+  - description: User login
+    name: 🔐 Login
+  - description: User management
+    name: 👥 Users
+  - description: Product management
+    name: 💡 Products

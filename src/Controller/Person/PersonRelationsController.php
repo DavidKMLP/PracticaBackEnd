@@ -49,6 +49,7 @@ final class PersonRelationsController extends ElementRelationsBaseController
     public function getEntities(Request $request, Response $response, array $args): Response
     {
         // @TODO
+
     }
 
     /**
@@ -65,6 +66,12 @@ final class PersonRelationsController extends ElementRelationsBaseController
     public function operationEntity(Request $request, Response $response, array $args): Response
     {
         // @TODO
+        return $this->operationRelatedElements(
+            $request,
+            $response,
+            $args,
+            EntityQueryController::getEntityClassName()
+        );
     }
 
     /**

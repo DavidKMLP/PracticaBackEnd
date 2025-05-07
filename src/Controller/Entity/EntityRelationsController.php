@@ -100,26 +100,34 @@ final class EntityRelationsController extends ElementRelationsBaseController
      */
     public function getProducts(Request $request, Response $response, array $args): Response
     {
-        // @TODO
-        $entityId = $args[EntityQueryController::getEntityIdName()] ?? 0;
+        try {
+            $entityId = $args[EntityQueryController::getEntityIdName()] ?? 0;
 
-        if ($entityId <= 0 || $entityId > 2147483647) {
-            return $this->getElements($request, $response, null, ProductQueryController::getEntitiesTag(), []);
+            if ($entityId <= 0 || $entityId > 2147483647) {
+                return $this->getElements($request, $response, null, ProductQueryController::getEntitiesTag(), []);
+            }
+
+            $entity = $this->entityManager
+                ->getRepository(EntityQueryController::getEntityClassName())
+                ->find($entityId);
+
+            $products = array_map(
+                fn($p) => ['product' => $p],
+                $entity?->getProducts()->getValues() ?? []
+            );
+
+            return $this->getElements($request, $response, $entity, ProductQueryController::getEntitiesTag(), $products);
+
+        } catch (\Throwable $e) {
+            $response->getBody()->write(json_encode([
+                'error' => $e->getMessage(),
+                'file'  => $e->getFile(),
+                'line'  => $e->getLine()
+            ]));
+            return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
-
-        /** @var Entity|null $entity */
-        $entity = $this->entityManager
-            ->getRepository(EntityQueryController::getEntityClassName())
-            ->find($entityId);
-
-        $products = array_map(
-            fn($p) => ['product' => $p],
-            $entity?->getProducts()->getValues() ?? []
-        );
-
-        return $this->getElements($request, $response, $entity, ProductQueryController::getEntitiesTag(), $products);
-
     }
+
 
     /**
      * PUT /entities/{entityId}/products/add/{elementId}
