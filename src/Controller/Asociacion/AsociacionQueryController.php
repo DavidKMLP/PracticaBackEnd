@@ -25,4 +25,16 @@
      {
          return 'asociacionId';
      }
+
+     public function getElementByName(Request $request, Response $response, array $args): Response
+     {
+         $element = $this->entityManager
+             ->getRepository(static::getEntityClassName())
+             ->findOneBy([ 'nombre' => $args['name'] ]);
+     
+         return ($element instanceof Element)
+             ? $response->withStatus(StatusCode::STATUS_NO_CONTENT)
+             : Error::createResponse($response, StatusCode::STATUS_NOT_FOUND);
+     }
+     
  }

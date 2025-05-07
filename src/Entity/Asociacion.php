@@ -22,7 +22,7 @@ class Asociacion implements \JsonSerializable
     #[ORM\Column(type: 'string', length: 255)]
     private string $url;
 
-    #[ORM\ManyToMany(targetEntity: 'TDW\ACiencia\Entity\Entity')]
+    #[ORM\ManyToMany(targetEntity: 'TDW\ACiencia\Entity\Entity', inversedBy: 'asociaciones')]
     #[ORM\JoinTable(name: 'asociacion_entidades')]
     private Collection $entidades;
 
