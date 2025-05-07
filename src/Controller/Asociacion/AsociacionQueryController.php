@@ -1,40 +1,34 @@
 <?php
 
-
 /**
- * src/Controller/Asociacion/AsociacionesRelationsController.php
+ * src/Controller/Asociacion/AsociacionQueryController.php
  *
  * @license https://opensource.org/licenses/MIT MIT License
  * @link    https://www.etsisi.upm.es/ ETS de Ingeniería de Sistemas Informáticos
  */
 
- namespace TDW\ACiencia\Controller\Asociacion;
+namespace TDW\ACiencia\Controller\Asociacion;
 
- use TDW\ACiencia\Controller\Element\ElementBaseQueryController;
- 
- class AsociacionQueryController extends ElementBaseQueryController
- {
-     public const PATH_ASOCIACIONES = '/asociaciones';
- 
-     public static function getEntityClassName(): string
-     {
-         return \TDW\ACiencia\Entity\Asociacion::class;
-     }
- 
-     public static function getEntityIdName(): string
-     {
-         return 'asociacionId';
-     }
+use TDW\ACiencia\Controller\Element\ElementBaseQueryController;
+use TDW\ACiencia\Entity\Asociacion;
 
-     public function getElementByName(Request $request, Response $response, array $args): Response
-     {
-         $element = $this->entityManager
-             ->getRepository(static::getEntityClassName())
-             ->findOneBy([ 'nombre' => $args['name'] ]);
-     
-         return ($element instanceof Element)
-             ? $response->withStatus(StatusCode::STATUS_NO_CONTENT)
-             : Error::createResponse($response, StatusCode::STATUS_NOT_FOUND);
-     }
-     
- }
+/**
+ * Class AsociacionQueryController
+ */
+class AsociacionQueryController extends ElementBaseQueryController
+{
+    public static function getEntityClassName(): string
+    {
+        return Asociacion::class;
+    }
+    
+    public static function getEntityIdName(): string
+    {
+        return 'asociacionId';
+    }
+
+    public static function getEntitiesTag(): string
+    {
+        return 'asociaciones';
+    }
+}

@@ -19,16 +19,17 @@ class Asociacion extends Element
 
     public function __construct(
         string $name,
-        ?\DateTime $birthDate = null,
-        ?\DateTime $deathDate = null,
+        string $url,
+        ?DateTime $birthDate = null,
+        ?DateTime $deathDate = null,
         ?string $imageUrl = null,
-        ?string $wikiUrl = null,
-        string $url = ''
+        ?string $wikiUrl = null
     ) {
         parent::__construct($name, $birthDate, $deathDate, $imageUrl, $wikiUrl);
-        $this->entidades = new ArrayCollection();
         $this->url = $url;
+        $this->entidades = new ArrayCollection();
     }
+    
 
     public function getUrl(): string
     {

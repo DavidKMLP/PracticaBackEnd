@@ -9,7 +9,6 @@
 
 use Slim\App;
 use TDW\ACiencia\Controller\Login\{ LoginController, OptionsQuery };
-use TDW\ACiencia\Controller\AsociacionController;
 
 return function (App $app) {
 
@@ -36,7 +35,7 @@ return function (App $app) {
         LoginController::class
     )->setName('api_post_login');
 
-    $app->group('/api/v1', function (\Slim\Routing\RouteCollectorProxy $api) {
+    /*$app->group('/api/v1', function (\Slim\Routing\RouteCollectorProxy $api) {
         $api->group('/asociaciones', function (\Slim\Routing\RouteCollectorProxy $group) {
             $group->get('', AsociacionController::class . ':index');
             $group->get('/{id:[0-9]+}', AsociacionController::class . ':show');
@@ -44,5 +43,5 @@ return function (App $app) {
             $group->delete('/{id:[0-9]+}', AsociacionController::class . ':delete');
             $group->put('/{id:[0-9]+}', AsociacionController::class . ':update');
         });
-    });    
+    });   */
 };

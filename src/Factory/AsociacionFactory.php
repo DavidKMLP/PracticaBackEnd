@@ -30,12 +30,14 @@ class AsociacionFactory extends ElementFactory
      */
     public function createElement(array $parsedBody): Asociacion
     {
-        $asociacion = new Asociacion(
-            $parsedBody['nombre'] ?? '',
-            $parsedBody['url'] ?? '',
-        );
+        $name = $parsedBody['name'] ?? '';
+        $birthDate = isset($parsedBody['birthDate']) ? new DateTime($parsedBody['birthDate']) : null;
+        $deathDate = isset($parsedBody['deathDate']) ? new DateTime($parsedBody['deathDate']) : null;
+        $imageUrl = $parsedBody['imageUrl'] ?? null;
+        $wikiUrl = $parsedBody['wikiUrl'] ?? null;
+        $url = $parsedBody['url'] ?? '';
 
-        $this->setDates($asociacion, $parsedBody);
+        $asociacion = new Asociacion($name, $url, $birthDate, $deathDate, $imageUrl, $wikiUrl);
 
         return $asociacion;
     }
@@ -50,13 +52,21 @@ class AsociacionFactory extends ElementFactory
     {
         assert($element instanceof Asociacion);
 
-        if (isset($parsedBody['nombre'])) {
-            $element->setNombre($parsedBody['nombre']);
+        if (isset($parsedBody['name'])) {
+            $element->setName($parsedBody['name']);
         }
         if (isset($parsedBody['url'])) {
             $element->setUrl($parsedBody['url']);
         }
 
         $this->setDates($element, $parsedBody);
+
+        if (isset($parsedBody['imageUrl'])) {
+            $element->setImageUrl($parsedBody['imageUrl']);
+        }
+        if (isset($parsedBody['wikiUrl'])) {
+            $element->setWikiUrl($parsedBody['wikiUrl']);
+        }
     }
+
 }

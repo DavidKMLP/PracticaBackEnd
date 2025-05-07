@@ -35,18 +35,14 @@ class AsociacionCommandController extends ElementBaseCommandController
         return 'asociacionId';
     }
 
-    public function options(Request $request, Response $response): Response
+    /**
+     * Crea una nueva entidad Asociacion desde los datos del cuerpo de la petición.
+     *
+     * @param array $data Datos del cuerpo de la petición
+     * @return object Nueva entidad Asociacion
+     */
+    protected static function createElement(array $data): object
     {
-    $routeContext = RouteContext::fromRequest($request);
-    $routingResults = $routeContext->getRoutingResults();
-    $methods = $routingResults->getAllowedMethods();
-
-    return $response
-        ->withStatus(204)
-        ->withAddedHeader('Cache-Control', 'private')
-        ->withAddedHeader(
-            'Allow',
-            implode(',', $methods)
-        );
+        return AsociacionFactory::create($data);
     }
 }
