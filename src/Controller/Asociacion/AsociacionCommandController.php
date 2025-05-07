@@ -34,4 +34,19 @@ class AsociacionCommandController extends ElementBaseCommandController
     {
         return 'asociacionId';
     }
+
+    public function options(Request $request, Response $response): Response
+    {
+    $routeContext = RouteContext::fromRequest($request);
+    $routingResults = $routeContext->getRoutingResults();
+    $methods = $routingResults->getAllowedMethods();
+
+    return $response
+        ->withStatus(204)
+        ->withAddedHeader('Cache-Control', 'private')
+        ->withAddedHeader(
+            'Allow',
+            implode(',', $methods)
+        );
+    }
 }

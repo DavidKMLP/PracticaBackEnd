@@ -5,45 +5,29 @@ namespace TDW\ACiencia\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use TDW\ACiencia\Entity\Entity;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'asociacion')]
-class Asociacion implements \JsonSerializable
+class Asociacion extends Element
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private int $id;
-
-    #[ORM\Column(type: 'string', length: 100)]
-    private string $nombre;
+    #[ORM\ManyToMany(targetEntity: Entity::class, inversedBy: 'asociaciones')]
+    #[ORM\JoinTable(name: 'asociacion_entidades')]
+    private Collection $entidades;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $url;
 
-    #[ORM\ManyToMany(targetEntity: 'TDW\ACiencia\Entity\Entity', inversedBy: 'asociaciones')]
-    #[ORM\JoinTable(name: 'asociacion_entidades')]
-    private Collection $entidades;
-
-    public function __construct()
-    {
+    public function __construct(
+        string $name,
+        ?\DateTime $birthDate = null,
+        ?\DateTime $deathDate = null,
+        ?string $imageUrl = null,
+        ?string $wikiUrl = null,
+        string $url = ''
+    ) {
+        parent::__construct($name, $birthDate, $deathDate, $imageUrl, $wikiUrl);
         $this->entidades = new ArrayCollection();
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function getNombre(): string
-    {
-        return $this->nombre;
-    }
-
-    public function setNombre(string $nombre): void
-    {
-        $this->nombre = $nombre;
+        $this->url = $url;
     }
 
     public function getUrl(): string
@@ -73,15 +57,13 @@ class Asociacion implements \JsonSerializable
         $this->entidades->removeElement($entidad);
     }
 
+    #[\JetBrains\PhpStorm\ArrayShape(['asociacion' => "array|mixed"])]
     public function jsonSerialize(): mixed
     {
-        return [
-            'id' => $this->getId(),
-            'nombre' => $this->getNombre(),
-            'url' => $this->getUrl(),
-            'entidades' => $this->getEntidades()->map(
-                fn(Entity $e) => $e->getId()
-            )->toArray()
-        ];
+        $data = parent::jsonSerialize();
+        $data['url'] = $this->getUrl();
+        $data['entidades'] = $this->getCodes($this->entidades);
+
+        return ['asociacion' => $data];
     }
 }
