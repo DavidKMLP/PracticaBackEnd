@@ -49,7 +49,23 @@ final class PersonRelationsController extends ElementRelationsBaseController
     public function getEntities(Request $request, Response $response, array $args): Response
     {
         // @TODO
+        $personId = $args[PersonQueryController::getEntityIdName()] ?? 0;
 
+        if ($personId <= 0 || $personId > 2147483647) {
+            return $this->getElements($request, $response, null, EntityQueryController::getEntitiesTag(), []);
+        }
+
+        /** @var Person|null $person */
+        $person = $this->entityManager
+            ->getRepository(PersonQueryController::getEntityClassName())
+            ->find($personId);
+
+        $entities = array_map(
+            fn($e) => ['entity' => $e],
+            $person?->getEntities()->getValues() ?? []
+        );
+
+        return $this->getElements($request, $response, $person, EntityQueryController::getEntitiesTag(), $entities);
     }
 
     /**
@@ -86,6 +102,23 @@ final class PersonRelationsController extends ElementRelationsBaseController
     public function getProducts(Request $request, Response $response, array $args): Response
     {
         // @TODO
+        $personId = $args[PersonQueryController::getEntityIdName()] ?? 0;
+
+        if ($personId <= 0 || $personId > 2147483647) {
+            return $this->getElements($request, $response, null, ProductQueryController::getEntitiesTag(), []);
+        }
+
+        /** @var Person|null $person */
+        $person = $this->entityManager
+            ->getRepository(PersonQueryController::getEntityClassName())
+            ->find($personId);
+
+        $products = array_map(
+            fn($p) => ['product' => $p],
+            $person?->getProducts()->getValues() ?? []
+        );
+
+        return $this->getElements($request, $response, $person, ProductQueryController::getEntitiesTag(), $products);
     }
 
     /**
@@ -102,5 +135,11 @@ final class PersonRelationsController extends ElementRelationsBaseController
     public function operationProduct(Request $request, Response $response, array $args): Response
     {
         // @TODO
+        return $this->operationRelatedElements(
+            $request,
+            $response,
+            $args,
+            ProductQueryController::getEntityClassName()
+        );
     }
 }
