@@ -336,15 +336,15 @@ components:
           type: string
       type: object
     AsociacionInput:
+      type: object
+      required:
+        - name
+        - url
       properties:
-        nombre:
+        name:
           type: string
         url:
           type: string
-      required:
-        - nombre
-        - url
-      type: object
     Element:
       properties:
         birthDate:
@@ -640,7 +640,9 @@ paths:
       summary: Crear una nueva asociación
       tags:
         - 🏛️ Asociaciones
-
+      security:
+        - MiWApiSecurity:
+            - writer
     options:
       tags:
         - 🏛️ Asociaciones
@@ -670,6 +672,9 @@ paths:
       summary: Eliminar asociación por ID
       tags:
         - 🏛️ Asociaciones
+      security:
+        - MiWApiSecurity:
+            - writer
 
     get:
       operationId: getAsociacion
@@ -718,6 +723,9 @@ paths:
       summary: Modificar asociación por ID
       tags:
         - 🏛️ Asociaciones
+      security:
+        - MiWApiSecurity:
+            - writer
 
   /asociaciones/nombre/{nombre}:
     get:
@@ -829,6 +837,9 @@ paths:
           $ref: '#/components/responses/Response_404'
         '406':
           $ref: '#/components/responses/Response_406'
+      security:
+        - MiWApiSecurity:
+            - writer
 
     options:
       tags:
