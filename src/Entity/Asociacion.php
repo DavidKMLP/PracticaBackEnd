@@ -43,17 +43,18 @@ class Asociacion extends Element implements WebElementInterface
     {
         $this->url = $url ?? 'https://url-defecto.org';
     }
-    public function addEntidad(Entity $entidad): void
+    public function addEntity(Entity $entity): void
     {
-        if (!$this->entidades->contains($entidad)) {
-            $this->entidades->add($entidad);
+        if (!$this->entidades->contains($entity)) {
+            $this->entidades->add($entity);
         }
     }
 
-    public function removeEntidad(Entity $entidad): void
+    public function removeEntity(Entity $entity): void
     {
-        $this->entidades->removeElement($entidad);
+        $this->entidades->removeElement($entity);
     }
+
 
     #[\JetBrains\PhpStorm\ArrayShape(['asociacion' => "array|mixed"])]
     public function jsonSerialize(): mixed

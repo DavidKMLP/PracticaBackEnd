@@ -16,6 +16,7 @@ use TDW\ACiencia\Controller\Element\ElementRelationsBaseController;
 use TDW\ACiencia\Controller\Entity\EntityQueryController;
 use TDW\ACiencia\Entity\Asociacion;
 use Slim\Routing\RouteContext;
+use TDW\ACiencia\Entity\Entity;
 
 
 /**
@@ -75,16 +76,6 @@ final class AsociacionRelationsController extends ElementRelationsBaseController
      * @return Response
      * @throws ORM\Exception\ORMException
      */
-    public function operationEntity(Request $request, Response $response, array $args): Response
-    {
-        return $this->operationRelatedElements(
-            $request,
-            $response,
-            $args,
-            EntityQueryController::getEntityClassName()
-        );
-    }
-
 
     public function options(Request $request, Response $response, array $args = []): Response
     {
@@ -96,15 +87,13 @@ final class AsociacionRelationsController extends ElementRelationsBaseController
             ->withStatus(204)
             ->withHeader('Allow', implode(',', $methods));
     }
-    public function optionsRelation(Request $request, Response $response, array $args = []): Response
-    {
-        $routeContext = RouteContext::fromRequest($request);
-        $routingResults = $routeContext->getRoutingResults();
-        $methods = $routingResults->getAllowedMethods();
 
-        return $response
-            ->withStatus(204)
-            ->withHeader('Allow', implode(',', $methods));
+
+    public function operationEntity(Request $request, Response $response, array $args): Response
+    {
+        return $this->operationRelatedElements($request, $response, $args, Entity::class);
     }
+
+
 
 }

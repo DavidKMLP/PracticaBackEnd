@@ -40,6 +40,15 @@ return function (App $app): void {
             AsociacionCommandController::class . ':put'
         )->setName('tdw_asociaciones_put')
             ->add(JwtMiddleware::class);
+        // PUT /asociaciones/{asociacionId}/{elementType}/{operationType}/{elementId}
+        $group->put(
+            '/{asociacionId:[0-9]+}/entities/{operationType:add|rem}/{elementId:[0-9]+}',
+            AsociacionRelationsController::class . ':operationEntity'
+        )->setName('tdw_asociaciones_operation_entity')
+            ->add(JwtMiddleware::class);
+        ;
+
+
 
         // DELETE /asociaciones/{asociacionId}
         $group->delete(
