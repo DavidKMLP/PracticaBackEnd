@@ -22,6 +22,8 @@ use TDW\ACiencia\Entity\Asociacion;
  */
 class AsociacionFactory extends ElementFactory
 {
+    protected static array $parsedBody = [];
+
     /**
      * Crea una nueva Asociación desde un array asociativo
      *
@@ -36,10 +38,14 @@ class AsociacionFactory extends ElementFactory
         ?string $imageUrl = null,
         ?string $wikiUrl = null
     ): Asociacion {
-        // Puedes modificar este valor por defecto o lanzar excepción si lo prefieres
-        $defaultUrl = 'https://url-defecto.org';
-        return new Asociacion($name, $defaultUrl, $birthDate, $deathDate, $imageUrl, $wikiUrl);
+        $url = self::$parsedBody['url'] ?? 'https://url-defecto.org';
+
+        return new Asociacion($name, $url, $birthDate, $deathDate, $imageUrl, $wikiUrl);
     }
+
+
+
+
 
     /**
      * Crea una Asociación desde el body de la request

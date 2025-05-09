@@ -17,6 +17,7 @@ use TDW\ACiencia\Entity\Asociacion;
  */
 class AsociacionQueryController extends ElementBaseQueryController
 {
+    public const PATH_ASOCIACIONES = '/asociaciones';
     public static function getEntityClassName(): string
     {
         return Asociacion::class;

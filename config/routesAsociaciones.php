@@ -1,44 +1,97 @@
 <?php
 
-/**
- * config/routesAsociaciones.php
- *
- * @license https://opensource.org/licenses/MIT MIT License
- * @link    https://www.etsisi.upm.es/ ETS de Ingeniería de Sistemas Informáticos
- */
-
 use Slim\App;
-use Slim\Routing\RouteCollectorProxy as Group;
-use TDW\ACiencia\Controller\Asociacion\{
-    AsociacionCommandController,
-    AsociacionQueryController,
-    AsociacionRelationsController
-};
+use TDW\ACiencia\Controller\Asociacion\AsociacionCommandController;
+use TDW\ACiencia\Controller\Asociacion\AsociacionQueryController;
+use TDW\ACiencia\Controller\Asociacion\AsociacionRelationsController;
 use TDW\ACiencia\Middleware\JwtMiddleware;
 
+return function (App $app): void {
+    $app->group($_ENV['RUTA_API'] . AsociacionQueryController::PATH_ASOCIACIONES, function (\Slim\Routing\RouteCollectorProxy $group): void {
 
-/** @var App $app */
+        // GET /asociaciones
+        $group->get(
+            '',
+            AsociacionQueryController::class . ':cget'
+        )->setName('tdw_asociaciones_cget');
 
-$app->group($_ENV['RUTA_API'], function (Group $api) {
-    $api->group(AsociacionCommandController::PATH_ASOCIACIONES, function (Group $group) {
+        // GET /asociaciones/{asociacionId}
+        $group->get(
+            '/{asociacionId:[0-9]+}',
+            AsociacionQueryController::class . ':get'
+        )->setName('tdw_asociaciones_get');
 
-        // Comandos: crear, eliminar, actualizar
-        $group->post('', AsociacionCommandController::class . ':post')
+        // GET /asociaciones/nombre/{nombre}
+        $group->get(
+            '/nombre/{nombre}',
+            AsociacionQueryController::class . ':getByNombre'
+        )->setName('tdw_asociaciones_get_nombre');
+
+        // POST /asociaciones
+        $group->post(
+            '',
+            AsociacionCommandController::class . ':post'
+        )->setName('tdw_asociaciones_post')
             ->add(JwtMiddleware::class);
-        $group->delete('/{id:[0-9]+}', AsociacionCommandController::class . ':delete')
+
+        // PUT /asociaciones/{asociacionId}
+        $group->put(
+            '/{asociacionId:[0-9]+}',
+            AsociacionCommandController::class . ':put'
+        )->setName('tdw_asociaciones_put')
             ->add(JwtMiddleware::class);
-        $group->put('/{id:[0-9]+}', AsociacionCommandController::class . ':update')
+
+        // DELETE /asociaciones/{asociacionId}
+        $group->delete(
+            '/{asociacionId:[0-9]+}',
+            AsociacionCommandController::class . ':delete'
+        )->setName('tdw_asociaciones_delete')
             ->add(JwtMiddleware::class);
-    
-        // Consultas: listar, obtener por ID, buscar por nombre
-        $group->get('', AsociacionQueryController::class . ':cget');
-        $group->get('/{id:[0-9]+}', AsociacionQueryController::class . ':show');
-        $group->get('/nombre/{nombre}', AsociacionQueryController::class . ':nombreExiste');
-    
-        // Relaciones: obtener relacionadas, modificar relación
-        $group->get('/{asociacionId}/{elementType}', AsociacionRelationsController::class . ':relatedElements');
-        $group->put('/{asociacionId}/{operationType}/{elementId}', AsociacionRelationsController::class . ':setRelation')
+
+        // GET /asociaciones/{asociacionId}/entities
+        $group->get(
+            '/{asociacionId:[0-9]+}/entities',
+            AsociacionRelationsController::class . ':getEntities'
+        )->setName('tdw_asociaciones_entities_get');
+
+        // PUT /asociaciones/{asociacionId}/entities/{entityId}
+        $group->put(
+            '/{asociacionId:[0-9]+}/entities/{entityId:[0-9]+}',
+            AsociacionRelationsController::class . ':putEntity'
+        )->setName('tdw_asociaciones_entities_put')
             ->add(JwtMiddleware::class);
+
+        // DELETE /asociaciones/{asociacionId}/entities/{entityId}
+        $group->delete(
+            '/{asociacionId:[0-9]+}/entities/{entityId:[0-9]+}',
+            AsociacionRelationsController::class . ':deleteEntity'
+        )->setName('tdw_asociaciones_entities_delete')
+            ->add(JwtMiddleware::class);
+
+        // OPTIONS
+        $group->options(
+            '',
+            AsociacionQueryController::class . ':options'
+        )->setName('tdw_asociaciones_options');
+
+        $group->options(
+            '/{asociacionId:[0-9]+}',
+            AsociacionQueryController::class . ':options'
+        )->setName('tdw_asociaciones_options_id');
+
+        $group->options(
+            '/nombre/{nombre}',
+            AsociacionQueryController::class . ':options'
+        )->setName('tdw_asociaciones_options_nombre');
+
+        $group->options(
+            '/{asociacionId:[0-9]+}/entities',
+            AsociacionRelationsController::class . ':options'
+        )->setName('tdw_asociaciones_entities_options');
+
+        $group->options(
+            '/{asociacionId:[0-9]+}/entities/{entityId:[0-9]+}',
+            AsociacionRelationsController::class . ':optionsEntity'
+        )->setName('tdw_asociaciones_entities_options_entity');
     });
-
-});
+};
