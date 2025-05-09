@@ -12,6 +12,7 @@
 namespace TDW\ACiencia\Factory;
 
 use DateTime;
+use InvalidArgumentException;
 use TDW\ACiencia\Entity\Asociacion;
 
 /**
@@ -28,45 +29,47 @@ class AsociacionFactory extends ElementFactory
      *
      * @return Asociacion
      */
-    public function createElement(array $parsedBody): Asociacion
+    public static function createElement(
+        string $name,
+        ?DateTime $birthDate = null,
+        ?DateTime $deathDate = null,
+        ?string $imageUrl = null,
+        ?string $wikiUrl = null
+    ): Asociacion {
+        // Puedes modificar este valor por defecto o lanzar excepción si lo prefieres
+        $defaultUrl = 'https://url-defecto.org';
+        return new Asociacion($name, $defaultUrl, $birthDate, $deathDate, $imageUrl, $wikiUrl);
+    }
+
+    /**
+     * Crea una Asociación desde el body de la request
+     */
+    public static function createFromParsedBody(array $parsedBody): Asociacion
     {
-        $name = $parsedBody['name'] ?? '';
+        if (!isset($parsedBody['url'])) {
+            throw new InvalidArgumentException('Missing required "url" for Asociacion.');
+        }
+
         $birthDate = isset($parsedBody['birthDate']) ? new DateTime($parsedBody['birthDate']) : null;
         $deathDate = isset($parsedBody['deathDate']) ? new DateTime($parsedBody['deathDate']) : null;
-        $imageUrl = $parsedBody['imageUrl'] ?? null;
-        $wikiUrl = $parsedBody['wikiUrl'] ?? null;
-        $url = $parsedBody['url'] ?? '';
 
-        $asociacion = new Asociacion($name, $url, $birthDate, $deathDate, $imageUrl, $wikiUrl);
+        $asociacion = new Asociacion(
+            $parsedBody['name'] ?? '',
+            $parsedBody['url'],
+            $birthDate,
+            $deathDate,
+            $parsedBody['imageUrl'] ?? null,
+            $parsedBody['wikiUrl'] ?? null
+        );
 
         return $asociacion;
     }
 
-    /**
-     * Actualiza una Asociación a partir del contenido del cuerpo de la petición
-     *
-     * @param Asociacion $element    Asociación a modificar
-     * @param array      $parsedBody Datos en formato array asociativo
-     */
-    public function updateElement(object $element, array $parsedBody): void
-    {
-        assert($element instanceof Asociacion);
 
-        if (isset($parsedBody['name'])) {
-            $element->setName($parsedBody['name']);
-        }
-        if (isset($parsedBody['url'])) {
-            $element->setUrl($parsedBody['url']);
-        }
 
-        $this->setDates($element, $parsedBody);
 
-        if (isset($parsedBody['imageUrl'])) {
-            $element->setImageUrl($parsedBody['imageUrl']);
-        }
-        if (isset($parsedBody['wikiUrl'])) {
-            $element->setWikiUrl($parsedBody['wikiUrl']);
-        }
-    }
+
+
+
 
 }

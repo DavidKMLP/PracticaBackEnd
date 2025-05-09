@@ -20,10 +20,10 @@ class Asociacion extends Element
     public function __construct(
         string $name,
         string $url,
-        ?DateTime $birthDate = null,
-        ?DateTime $deathDate = null,
+        ?\DateTime $birthDate = null,
+        ?\DateTime $deathDate = null,
         ?string $imageUrl = null,
-        ?string $wikiUrl = null
+        ?string $wikiUrl = null,
     ) {
         parent::__construct($name, $birthDate, $deathDate, $imageUrl, $wikiUrl);
         $this->url = $url;
