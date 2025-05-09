@@ -86,7 +86,6 @@ final class EntityRelationsController extends ElementRelationsBaseController
             $args,
             PersonQueryController::getEntityClassName()
         );
-
     }
 
     /**
