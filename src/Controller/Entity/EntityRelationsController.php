@@ -62,7 +62,7 @@ final class EntityRelationsController extends ElementRelationsBaseController
 
         $persons = $entity?->getPersons()->getValues() ?? [];
 
-        return $this->getElements($request, $response, $persons, PersonQueryController::getEntitiesTag(), $persons);
+        return $this->getElements($request, $response, $entity, PersonQueryController::getEntitiesTag(), $persons);
 
     }
 
