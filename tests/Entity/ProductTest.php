@@ -1,181 +1,80 @@
 <?php
+declare(strict_types=1);
 
-/**
- * tests/Entity/ProductTest.php
- *
- * @license https://opensource.org/licenses/MIT MIT License
- * @link    https://www.etsisi.upm.es/ ETS de Ingeniería de Sistemas Informáticos
- */
+namespace App\Tests\Entity;
 
-namespace TDW\Test\ACiencia\Entity;
-
+use App\Entity\Asociacion;
+use App\Factory\EntityFactory;
+use Faker\Generator;
+use Faker\Factory as FakerFactory;
 use PHPUnit\Framework\Attributes as TestsAttr;
 use PHPUnit\Framework\TestCase;
-use TDW\ACiencia\Entity\{ Element, Product };
-use TDW\ACiencia\Factory;
 
-/**
- * Class ProductTest
- */
-#[TestsAttr\Group('products')]
-#[TestsAttr\CoversClass(Product::class)]
-#[TestsAttr\CoversClass(Element::class)]
-#[TestsAttr\CoversClass(Factory\ProductFactory::class)]
-#[TestsAttr\UsesClass(Factory\EntityFactory::class)]
-#[TestsAttr\UsesClass(Factory\PersonFactory::class)]
-class ProductTest extends TestCase
+#[TestsAttr\UsesClass(EntityFactory::class)]
+#[TestsAttr\CoversClass(Asociacion::class)]
+final class AsociacionTest extends TestCase
 {
-    protected static Product $product;
+    private static Generator $faker;
 
-    private static \Faker\Generator $faker;
-
-    /**
-     * Sets up the fixture.
-     * This method is called before a test is executed.
-     */
     public static function setUpBeforeClass(): void
     {
-        self::$faker = \Faker\Factory::create('es_ES');
-        $name = self::$faker->name();
-        self::assertNotEmpty($name);
-        self::$product  = Factory\ProductFactory::createElement($name);
+        self::$faker = FakerFactory::create('es_ES');
     }
 
-    /**
-     * @return void
-     */
-    public function testConstructor(): void
+    public function testConstructorYGetters(): void
     {
-        $name = self::$faker->name();
-        self::assertNotEmpty($name);
-        self::$product = Factory\ProductFactory::createElement($name);
-        self::assertSame(0, self::$product->getId());
-        self::assertSame(
-            $name,
-            self::$product->getName()
+        $nombre = self::$faker->company;
+        $ambito = self::$faker->randomElement(['Local', 'Nacional', 'Internacional']);
+        $fecha = self::$faker->date('Y-m-d');
+        $email = self::$faker->companyEmail;
+
+        $asociacion = new Asociacion(
+            nombre: $nombre,
+            ambito: $ambito,
+            fechaFundacion: $fecha,
+            email: $email
         );
-        self::assertEmpty(self::$product->getEntities());
-        self::assertEmpty(self::$product->getPersons());
-    }
 
-    public function testGetId(): void
-    {
-        self::assertSame(0, self::$product->getId());
-    }
+        $this->assertEquals($nombre, $asociacion->getNombre());
+        $this->assertEquals($ambito, $asociacion->getAmbito());
+        $this->assertEquals($fecha, $asociacion->getFechaFundacion());
+        $this->assertEquals($email, $asociacion->getEmail());
 
-    public function testGetSetProductName(): void
-    {
-        $productname = self::$faker->name();
-        self::assertNotEmpty($productname);
-        self::$product->setName($productname);
-        static::assertSame(
-            $productname,
-            self::$product->getName()
-        );
-    }
-
-    public function testGetSetBirthDate(): void
-    {
-        $birthDate = self::$faker->dateTime();
-        self::$product->setBirthDate($birthDate);
-        static::assertSame(
-            $birthDate,
-            self::$product->getBirthDate()
-        );
-    }
-
-    public function testGetSetDeathDate(): void
-    {
-        $deathDate = self::$faker->dateTime();
-        self::$product->setDeathDate($deathDate);
-        static::assertSame(
-            $deathDate,
-            self::$product->getDeathDate()
-        );
-    }
-
-    public function testGetSetImageUrl(): void
-    {
-        $imageUrl = self::$faker->url();
-        self::$product->setImageUrl($imageUrl);
-        static::assertSame(
-            $imageUrl,
-            self::$product->getImageUrl()
-        );
-    }
-
-    public function testGetSetWikiUrl(): void
-    {
-        $wikiUrl = self::$faker->url();
-        self::$product->setWikiUrl($wikiUrl);
-        static::assertSame(
-            $wikiUrl,
-            self::$product->getWikiUrl()
-        );
-    }
-
-    public function testGetAddContainsRemoveEntities(): void
-    {
-        self::assertEmpty(self::$product->getEntities());
-        $slug = self::$faker->slug();
-        self::assertNotEmpty($slug);
-        $entity = Factory\EntityFactory::createElement($slug);
-        self::$product->addEntity($entity);
-        self::$product->addEntity($entity); // CCoverage
-
-        self::assertNotEmpty(self::$product->getEntities());
-        self::assertTrue(self::$product->containsEntity($entity));
-
-        self::$product->removeEntity($entity);
-        self::assertFalse(self::$product->containsEntity($entity));
-        self::assertCount(0, self::$product->getEntities());
-        self::assertFalse(self::$product->removeEntity($entity));
-    }
-
-    public function testGetAddContainsRemovePersons(): void
-    {
-        self::assertEmpty(self::$product->getPersons());
-        $slug = self::$faker->slug();
-        self::assertNotEmpty($slug);
-        $person = Factory\PersonFactory::createElement($slug);
-        self::$product->addPerson($person);
-        self::$product->addPerson($person);  // CCoverage
-
-        self::assertNotEmpty(self::$product->getPersons());
-        self::assertTrue(self::$product->containsPerson($person));
-
-        self::$product->removePerson($person);
-        self::assertFalse(self::$product->containsPerson($person));
-        self::assertCount(0, self::$product->getPersons());
-        self::assertFalse(self::$product->removePerson($person));
+        $this->assertNull($asociacion->getId());
     }
 
     public function testToString(): void
     {
-        $productName = self::$faker->text();
-        self::assertNotEmpty($productName);
-        $birthDate = self::$faker->dateTime();
-        $deathDate = self::$faker->dateTime();
-        self::$product->setName($productName);
-        self::$product->setBirthDate($birthDate);
-        self::$product->setDeathDate($deathDate);
-        self::assertStringContainsString(
-            $productName,
-            self::$product->__toString()
+        $asociacion = new Asociacion(
+            nombre: self::$faker->company,
+            ambito: self::$faker->randomElement(['Local', 'Nacional', 'Internacional']),
+            fechaFundacion: self::$faker->date('Y-m-d'),
+            email: self::$faker->companyEmail
         );
-        self::assertStringContainsString(
-            $birthDate->format('Y-m-d'),
-            self::$product->__toString()
-        );
-        self::assertStringContainsString(
-            $deathDate->format('Y-m-d'),
-            self::$product->__toString()
-        );
+
+        $cadena = (string) $asociacion;
+
+        $this->assertStringContainsString($asociacion->getNombre(), $cadena);
+        $this->assertStringContainsString($asociacion->getAmbito(), $cadena);
+        $this->assertStringContainsString($asociacion->getFechaFundacion(), $cadena);
+        $this->assertStringContainsString($asociacion->getEmail(), $cadena);
     }
 
     public function testJsonSerialize(): void
     {
-        $jsonStr = (string) json_encode(self::$product, JSON_PARTIAL_OUTPUT_ON_ERROR);
-        self::assertJson($jsonStr);
+        $asociacion = new Asociacion(
+            nombre: self::$faker->company,
+            ambito: self::$faker->randomElement(['Local', 'Nacional', 'Internacional']),
+            fechaFundacion: self::$faker->date('Y-m-d'),
+            email: self::$faker->companyEmail
+        );
+
+        $json = json_encode($asociacion);
+        $data = json_decode($json, true);
+
+        $this->assertEquals($asociacion->getNombre(), $data['nombre']);
+        $this->assertEquals($asociacion->getAmbito(), $data['ambito']);
+        $this->assertEquals($asociacion->getFechaFundacion(), $data['fechaFundacion']);
+        $this->assertEquals($asociacion->getEmail(), $data['email']);
     }
 }

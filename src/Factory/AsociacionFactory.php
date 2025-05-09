@@ -14,13 +14,14 @@ namespace TDW\ACiencia\Factory;
 use DateTime;
 use InvalidArgumentException;
 use TDW\ACiencia\Entity\Asociacion;
+use TDW\ACiencia\Entity\WebURLInterface;
 
 /**
  * Class AsociacionFactory
  *
  * @package TDW\ACiencia\Factory
  */
-class AsociacionFactory extends ElementFactory
+class AsociacionFactory extends WebElementFactory
 {
     protected static array $parsedBody = [];
 
@@ -29,53 +30,18 @@ class AsociacionFactory extends ElementFactory
      *
      * @param array $parsedBody Datos en formato array asociativo
      *
-     * @return Asociacion
+     * @return WebURLInterface
      */
     public static function createElement(
-        string $name,
+        string    $name,
+        string    $url,
         ?DateTime $birthDate = null,
         ?DateTime $deathDate = null,
-        ?string $imageUrl = null,
-        ?string $wikiUrl = null
-    ): Asociacion {
-        $url = self::$parsedBody['url'] ?? 'https://url-defecto.org';
-
-        return new Asociacion($name, $url, $birthDate, $deathDate, $imageUrl, $wikiUrl);
-    }
-
-
-
-
-
-    /**
-     * Crea una Asociación desde el body de la request
-     */
-    public static function createFromParsedBody(array $parsedBody): Asociacion
+        ?string   $imageUrl = null,
+        ?string   $wikiUrl = null
+    ): Asociacion
     {
-        if (!isset($parsedBody['url'])) {
-            throw new InvalidArgumentException('Missing required "url" for Asociacion.');
-        }
-
-        $birthDate = isset($parsedBody['birthDate']) ? new DateTime($parsedBody['birthDate']) : null;
-        $deathDate = isset($parsedBody['deathDate']) ? new DateTime($parsedBody['deathDate']) : null;
-
-        $asociacion = new Asociacion(
-            $parsedBody['name'] ?? '',
-            $parsedBody['url'],
-            $birthDate,
-            $deathDate,
-            $parsedBody['imageUrl'] ?? null,
-            $parsedBody['wikiUrl'] ?? null
-        );
-
+        $asociacion = new Asociacion($name, $url, $birthDate, $deathDate, $imageUrl, $wikiUrl);
         return $asociacion;
     }
-
-
-
-
-
-
-
-
 }

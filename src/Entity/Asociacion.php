@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'asociacion')]
-class Asociacion extends Element
+class Asociacion extends Element implements WebElementInterface
 {
     #[ORM\ManyToMany(targetEntity: Entity::class, inversedBy: 'asociaciones')]
     #[ORM\JoinTable(name: 'asociacion_entidades')]
@@ -29,23 +29,20 @@ class Asociacion extends Element
         $this->url = $url;
         $this->entidades = new ArrayCollection();
     }
-    
-
-    public function getUrl(): string
-    {
-        return $this->url;
-    }
-
-    public function setUrl(string $url): void
-    {
-        $this->url = $url;
-    }
-
     public function getEntidades(): Collection
     {
         return $this->entidades;
     }
 
+    public function getWebUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setWebUrl(?string $url): void
+    {
+        $this->url = $url ?? 'https://url-defecto.org';
+    }
     public function addEntidad(Entity $entidad): void
     {
         if (!$this->entidades->contains($entidad)) {
@@ -62,7 +59,7 @@ class Asociacion extends Element
     public function jsonSerialize(): mixed
     {
         $data = parent::jsonSerialize();
-        $data['url'] = $this->getUrl();
+        $data['url'] = $this->getWebUrl();
         $data['entidades'] = $this->getCodes($this->entidades);
 
         return ['asociacion' => $data];
