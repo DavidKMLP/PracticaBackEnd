@@ -30,7 +30,7 @@ class AsociacionFactory extends WebElementFactory
      *
      * @param array $parsedBody Datos en formato array asociativo
      *
-     * @return WebURLInterface
+     * @return Asociacion
      */
     public static function createElement(
         string    $name,

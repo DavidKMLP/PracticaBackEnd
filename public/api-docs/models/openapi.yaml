@@ -1141,6 +1141,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Person'
+      security:
+        - MiWApiSecurity:
+            - writer
 
     options:
       tags:
@@ -1197,6 +1200,9 @@ paths:
           $ref: '#/components/responses/Response_404'
         '428':
           $ref: '#/components/responses/Response_428'
+      security:
+        - MiWApiSecurity:
+            - writer
 
     delete:
       tags:
@@ -1210,7 +1216,9 @@ paths:
           description: Person deleted
         '404':
           $ref: '#/components/responses/Response_404'
-
+      security:
+        - MiWApiSecurity:
+            - writer
     options:
       tags:
         - 🧑‍🔬 Persons
@@ -1299,6 +1307,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Entity'
+      security:
+        - MiWApiSecurity:
+            - writer
 
     options:
       tags:
@@ -1352,7 +1363,9 @@ paths:
                 $ref: '#/components/schemas/Entity'
         '404':
           $ref: '#/components/responses/NotFound'
-
+      security:
+        - MiWApiSecurity:
+            - writer
     delete:
       tags:
         - 🧩 Entities
@@ -1365,7 +1378,9 @@ paths:
           description: Entity deleted
         '404':
           $ref: '#/components/responses/NotFound'
-
+      security:
+        - MiWApiSecurity:
+            - writer
     options:
       tags:
         - 🧩 Entities
