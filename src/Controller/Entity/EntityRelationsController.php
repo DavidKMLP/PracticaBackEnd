@@ -100,32 +100,21 @@ final class EntityRelationsController extends ElementRelationsBaseController
      */
     public function getProducts(Request $request, Response $response, array $args): Response
     {
-        try {
-            $entityId = $args[EntityQueryController::getEntityIdName()] ?? 0;
 
-            if ($entityId <= 0 || $entityId > 2147483647) {
-                return $this->getElements($request, $response, null, ProductQueryController::getEntitiesTag(), []);
-            }
+        $entityId = $args[EntityQueryController::getEntityIdName()] ?? 0;
 
-            $entity = $this->entityManager
-                ->getRepository(EntityQueryController::getEntityClassName())
-                ->find($entityId);
-
-            $products = array_map(
-                fn($p) => ['product' => $p],
-                $entity?->getProducts()->getValues() ?? []
-            );
-
-            return $this->getElements($request, $response, $entity, ProductQueryController::getEntitiesTag(), $products);
-
-        } catch (\Throwable $e) {
-            $response->getBody()->write(json_encode([
-                'error' => $e->getMessage(),
-                'file'  => $e->getFile(),
-                'line'  => $e->getLine()
-            ]));
-            return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+        if ($entityId <= 0 || $entityId > 2147483647) {
+            return $this->getElements($request, $response, null, ProductQueryController::getEntitiesTag(), []);
         }
+
+        $entity = $this->entityManager
+            ->getRepository(EntityQueryController::getEntityClassName())
+            ->find($entityId);
+
+        $products = $entity?->getProducts()->getValues() ?? [];
+
+        return $this->getElements($request, $response, $entity, ProductQueryController::getEntitiesTag(), $products);
+
     }
 
 

@@ -48,7 +48,7 @@ final class PersonRelationsController extends ElementRelationsBaseController
      */
     public function getEntities(Request $request, Response $response, array $args): Response
     {
-        // @TODO
+
         $personId = $args[PersonQueryController::getEntityIdName()] ?? 0;
 
         if ($personId <= 0 || $personId > 2147483647) {
@@ -60,10 +60,7 @@ final class PersonRelationsController extends ElementRelationsBaseController
             ->getRepository(PersonQueryController::getEntityClassName())
             ->find($personId);
 
-        $entities = array_map(
-            fn($e) => ['entity' => $e],
-            $person?->getEntities()->getValues() ?? []
-        );
+        $entities = $person?->getEntities()->getValues() ?? [];
 
         return $this->getElements($request, $response, $person, EntityQueryController::getEntitiesTag(), $entities);
     }
@@ -101,7 +98,6 @@ final class PersonRelationsController extends ElementRelationsBaseController
      */
     public function getProducts(Request $request, Response $response, array $args): Response
     {
-        // @TODO
         $personId = $args[PersonQueryController::getEntityIdName()] ?? 0;
 
         if ($personId <= 0 || $personId > 2147483647) {
@@ -113,10 +109,7 @@ final class PersonRelationsController extends ElementRelationsBaseController
             ->getRepository(PersonQueryController::getEntityClassName())
             ->find($personId);
 
-        $products = array_map(
-            fn($p) => ['product' => $p],
-            $person?->getProducts()->getValues() ?? []
-        );
+        $products = $person?->getProducts()->getValues() ?? [];
 
         return $this->getElements($request, $response, $person, ProductQueryController::getEntitiesTag(), $products);
     }
