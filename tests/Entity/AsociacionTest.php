@@ -1,82 +1,69 @@
 <?php
+
 declare(strict_types=1);
 
+namespace TDW\ACiencia\Tests\Entity;
+
+use DateTime;
 use PHPUnit\Framework\TestCase;
-use App\Entity\Asociacion;
+use TDW\ACiencia\Entity\Asociacion;
+use TDW\ACiencia\Entity\Entity;
 
-
-final class AsociacionTest extends TestCase
+class AsociacionTest extends TestCase
 {
-    public function testConstructorYGetters(): void
+    public function testConstructor(): void
     {
-        $asociacion = new Asociacion(
-            nombre: 'Asociación Científica',
-            ambito: 'Nacional',
-            fechaFundacion: '1999-10-10',
-            email: 'info@cientifica.org'
-        );
+        $name = "Asociación Española de IA";
+        $url = "https://asocia-eia.org";
+        $birthDate = new DateTime("2000-01-01");
 
-        $this->assertEquals('Asociación Científica', $asociacion->getNombre());
-        $this->assertEquals('Nacional', $asociacion->getAmbito());
-        $this->assertEquals('1999-10-10', $asociacion->getFechaFundacion());
-        $this->assertEquals('info@cientifica.org', $asociacion->getEmail());
+        $asociacion = new Asociacion($name, $url, $birthDate);
 
-        // Suponiendo que hereda métodos de Element
-        $this->assertNull($asociacion->getId()); // si no ha sido persistida aún
+        $this->assertSame($name, $asociacion->getName());
+        $this->assertSame($url, $asociacion->getWebUrl());
+        $this->assertEquals($birthDate, $asociacion->getBirthDate());
+        $this->assertCount(0, $asociacion->getEntidades());
     }
 
-    public function testSetters(): void
+    public function testAddAndRemoveEntity(): void
     {
-        $asociacion = new Asociacion(
-            nombre: 'Asociación X',
-            ambito: 'Local',
-            fechaFundacion: '2000-01-01',
-            email: 'x@asociacion.org'
-        );
+        $asociacion = new Asociacion("Asociación X", "http://asociacion-x.org");
+        $entidad = new Entity("Entidad Y");
 
-        $asociacion->setNombre('Asociación Y');
-        $asociacion->setAmbito('Internacional');
-        $asociacion->setFechaFundacion('2010-12-31');
-        $asociacion->setEmail('y@asociacion.org');
+        $asociacion->addEntity($entidad);
+        $this->assertCount(1, $asociacion->getEntidades());
+        $this->assertTrue($asociacion->getEntidades()->contains($entidad));
 
-        $this->assertEquals('Asociación Y', $asociacion->getNombre());
-        $this->assertEquals('Internacional', $asociacion->getAmbito());
-        $this->assertEquals('2010-12-31', $asociacion->getFechaFundacion());
-        $this->assertEquals('y@asociacion.org', $asociacion->getEmail());
+        $asociacion->removeEntity($entidad);
+        $this->assertCount(0, $asociacion->getEntidades());
     }
 
-    public function testToString(): void
+    public function testSetAndGetWebUrl(): void
     {
-        $asociacion = new Asociacion(
-            nombre: 'BioAsociación',
-            ambito: 'Europeo',
-            fechaFundacion: '1985-06-30',
-            email: 'contacto@bio.org'
-        );
+        $asociacion = new Asociacion("Nombre", "http://original-url.org");
+        $asociacion->setWebUrl("http://nueva-url.org");
 
-        $cadena = (string) $asociacion;
-
-        $this->assertStringContainsString('BioAsociación', $cadena);
-        $this->assertStringContainsString('Europeo', $cadena);
-        $this->assertStringContainsString('1985-06-30', $cadena);
-        $this->assertStringContainsString('contacto@bio.org', $cadena);
+        $this->assertSame("http://nueva-url.org", $asociacion->getWebUrl());
     }
-
     public function testJsonSerialize(): void
     {
-        $asociacion = new Asociacion(
-            nombre: 'GeoAsociación',
-            ambito: 'Global',
-            fechaFundacion: '1970-01-01',
-            email: 'geo@asociacion.net'
-        );
+        $name = "Asociación de Prueba";
+        $url = "http://asociacion-prueba.org";
+        $birthDate = new DateTime("1999-12-31");
 
-        $json = json_encode($asociacion);
-        $data = json_decode($json, true);
+        $asociacion = new Asociacion($name, $url, $birthDate);
 
-        $this->assertEquals('GeoAsociación', $data['nombre']);
-        $this->assertEquals('Global', $data['ambito']);
-        $this->assertEquals('1970-01-01', $data['fechaFundacion']);
-        $this->assertEquals('geo@asociacion.net', $data['email']);
+        // Simular que tiene una entidad
+        $entidad = new Entity("Entidad A");
+        $asociacion->addEntity($entidad);
+
+        $json = $asociacion->jsonSerialize();
+
+        $this->assertArrayHasKey('asociacion', $json);
+        $this->assertSame($name, $json['asociacion']['name']);
+        $this->assertSame($url, $json['asociacion']['url']);
+        $this->assertArrayHasKey('entidades', $json['asociacion']);
+        $this->assertIsArray($json['asociacion']['entidades']);
     }
+
 }
