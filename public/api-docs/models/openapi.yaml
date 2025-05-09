@@ -795,6 +795,19 @@ paths:
       summary: Provides the list of HTTP supported methods.
       description: Return a `Allow` header with a comma separated list of HTTP supported methods.
       operationId: optionsAsociacionElements
+      parameters:
+        - name: asociacionId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: elementType
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - entities
       responses:
         '204':
           description: '`Allow` header <Response body is empty>'
@@ -848,20 +861,44 @@ paths:
       security:
         - MiWApiSecurity:
             - writer
-
     options:
       tags:
         - 🏛️ Asociaciones
       summary: Provides the list of HTTP supported methods.
       description: Return a `Allow` header with a comma separated list of HTTP supported methods.
       operationId: optionsAsociacionRel
+      parameters:
+        - name: asociacionId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: elementType
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - entities
+        - name: operationType
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - add
+              - rem
+        - name: elementId
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '204':
           description: '`Allow` header <Response body is empty>'
           headers:
             Allow:
               $ref: '#/components/headers/Allow'
-
   /products:
     get:
       description: Returns all products from the system that the user has access to.

@@ -15,6 +15,8 @@ use Slim\Http\Response;
 use TDW\ACiencia\Controller\Element\ElementRelationsBaseController;
 use TDW\ACiencia\Controller\Entity\EntityQueryController;
 use TDW\ACiencia\Entity\Asociacion;
+use Slim\Routing\RouteContext;
+
 
 /**
  * Class AsociacionRelationsController
@@ -82,4 +84,27 @@ final class AsociacionRelationsController extends ElementRelationsBaseController
             EntityQueryController::getEntityClassName()
         );
     }
+
+
+    public function options(Request $request, Response $response, array $args = []): Response
+    {
+        $routeContext = RouteContext::fromRequest($request);
+        $routingResults = $routeContext->getRoutingResults();
+        $methods = $routingResults->getAllowedMethods();
+
+        return $response
+            ->withStatus(204)
+            ->withHeader('Allow', implode(',', $methods));
+    }
+    public function optionsRelation(Request $request, Response $response, array $args = []): Response
+    {
+        $routeContext = RouteContext::fromRequest($request);
+        $routingResults = $routeContext->getRoutingResults();
+        $methods = $routingResults->getAllowedMethods();
+
+        return $response
+            ->withStatus(204)
+            ->withHeader('Allow', implode(',', $methods));
+    }
+
 }

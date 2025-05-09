@@ -85,6 +85,11 @@ return function (App $app): void {
         )->setName('tdw_asociaciones_options_nombre');
 
         $group->options(
+            '/{id:[0-9]+}/{elementType}',
+            AsociacionRelationsController::class . ':options'
+        )->setName('tdw_asociaciones_elements_options');
+
+        $group->options(
             '/{asociacionId:[0-9]+}/entities',
             AsociacionRelationsController::class . ':options'
         )->setName('tdw_asociaciones_entities_options');
@@ -93,5 +98,11 @@ return function (App $app): void {
             '/{asociacionId:[0-9]+}/entities/{entityId:[0-9]+}',
             AsociacionRelationsController::class . ':optionsEntity'
         )->setName('tdw_asociaciones_entities_options_entity');
+
+        $group->options(
+            '/{asociacionId:[0-9]+}/{elementType}/{operationType}/{elementId:[0-9]+}',
+            AsociacionRelationsController::class . ':optionsRelation'
+        )->setName('tdw_asociaciones_elements_options_relation');
+
     });
 };
