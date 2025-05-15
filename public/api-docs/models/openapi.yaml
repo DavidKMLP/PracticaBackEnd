@@ -1367,7 +1367,7 @@ paths:
       summary: Get an entity by ID
       operationId: getEntity
       parameters:
-        - $ref: '#/components/parameters/EntityId'
+        - $ref: '#/components/parameters/entityId'
       responses:
         '200':
           description: Entity found
@@ -1384,7 +1384,8 @@ paths:
       summary: Update an entity
       operationId: putEntity
       parameters:
-        - $ref: '#/components/parameters/EntityId'
+        - $ref: '#/components/parameters/entityId'
+        - $ref: '#/components/parameters/ifMatchParam'
       requestBody:
         content:
           application/json:
@@ -1400,6 +1401,8 @@ paths:
                 $ref: '#/components/schemas/Entity'
         '404':
           $ref: '#/components/responses/NotFound'
+        '428':
+          $ref: '#/components/responses/Response_428'
       security:
         - MiWApiSecurity:
             - writer
