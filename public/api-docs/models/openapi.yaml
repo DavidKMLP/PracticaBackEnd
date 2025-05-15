@@ -1412,7 +1412,7 @@ paths:
       summary: Delete an entity
       operationId: deleteEntity
       parameters:
-        - $ref: '#/components/parameters/EntityId'
+        - $ref: '#/components/parameters/entityId'
       responses:
         '204':
           description: Entity deleted
@@ -1427,7 +1427,7 @@ paths:
       summary: Allowed methods for /entities/{entityId}
       operationId: optionsEntity
       parameters:
-        - $ref: '#/components/parameters/EntityId'
+        - $ref: '#/components/parameters/entityId'
       responses:
         '204':
           description: Allowed methods
@@ -1442,7 +1442,7 @@ paths:
       summary: Get products related to an entity
       operationId: getEntityProducts
       parameters:
-        - $ref: '#/components/parameters/EntityId'
+        - $ref: '#/components/parameters/entityId'
       responses:
         '200':
           description: Related products
@@ -1462,7 +1462,7 @@ paths:
       summary: Get persons related to an entity
       operationId: getEntityPersons
       parameters:
-        - $ref: '#/components/parameters/EntityId'
+        - $ref: '#/components/parameters/entityId'
       responses:
         '200':
           description: Related persons
