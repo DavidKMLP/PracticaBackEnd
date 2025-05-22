@@ -115,6 +115,19 @@ class UpdateCommand
             }
         }
 
+        // Update fechaNacimiento
+        if (array_key_exists('fechaNacimiento', $req_data)) {
+            try {
+                $userToModify->setFechaNacimiento(
+                    $req_data['fechaNacimiento'] !== null ? new \DateTime($req_data['fechaNacimiento']) : null
+                );
+            } catch (\Exception) {
+                $this->entityManager->rollback();
+                return Error::createResponse($response, StatusCode::STATUS_BAD_REQUEST);
+            }
+        }
+
+
         $this->entityManager->flush();
         $this->entityManager->commit();
 

@@ -67,6 +67,14 @@ class CreateCommand
                 $req_data['password'],
                 Role::INACTIVE
             );
+            //Isset usado para comprobar el dato recibido
+            if (isset($req_data['fechaNacimiento'])) {
+                try {
+                    $user->setFechaNacimiento(new \DateTime($req_data['fechaNacimiento']));
+                } catch (\Exception) {
+                    return Error::createResponse($response, StatusCode::STATUS_BAD_REQUEST);
+                }
+            }
         } catch (Throwable) {    // 400 BAD REQUEST: Unexpected role
             return Error::createResponse($response, StatusCode::STATUS_BAD_REQUEST);
         }

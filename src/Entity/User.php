@@ -67,6 +67,13 @@ class User implements JsonSerializable, Stringable
     )]
     protected Role $role;
 
+    #[ORM\Column(
+        name: "fechaNacimiento",
+        type: "date",
+        nullable: true
+    )]
+    private ?\DateTimeInterface $fechaNacimiento = null;
+
     /**
      * User constructor.
      *
@@ -166,6 +173,16 @@ class User implements JsonSerializable, Stringable
         $this->password_hash = password_hash($password, PASSWORD_DEFAULT);
     }
 
+    public function getFechaNacimiento(): ?\DateTimeInterface
+    {
+        return $this->fechaNacimiento;
+    }
+
+    public function setFechaNacimiento(?\DateTimeInterface $fechaNacimiento): void
+    {
+        $this->fechaNacimiento = $fechaNacimiento;
+    }
+
     /**
      * Verifies that the given hash matches the user password.
      *
@@ -233,12 +250,13 @@ class User implements JsonSerializable, Stringable
         $reflection = new ReflectionObject($this);
         return
             sprintf(
-                '[%s: (id=%04d, username="%s", email="%s", role="%s")]',
+                '[%s: (id=%04d, username="%s", email="%s", role="%s", fechaNacimiento="%s")]',
                 $reflection->getShortName(),
                 $this->getId(),
                 $this->getUsername(),
                 $this->getEmail(),
                 $this->role->name,
+                $this->getFechaNacimiento()?->format('Y-m-d') ?? 'null',
             );
     }
 
@@ -248,13 +266,14 @@ class User implements JsonSerializable, Stringable
     #[ArrayShape(['user' => "array"])]
     public function jsonSerialize(): mixed
     {
-        $reflection = new ReflectionObject($this);
+        $reflection = new \ReflectionObject($this);
         return [
             strtolower($reflection->getShortName()) => [
                 'id' => $this->getId(),
                 'username' => $this->getUsername(),
                 'email' => $this->getEmail(),
                 'role' => $this->role->name,
+                'fechaNacimiento' => $this->getFechaNacimiento()?->format('Y-m-d'),
             ]
         ];
     }

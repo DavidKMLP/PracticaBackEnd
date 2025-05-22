@@ -502,6 +502,11 @@ components:
         username:
           description: User name
           type: string
+        fechaNacimiento:
+          type: string
+          format: date
+          example: "1990-05-12"
+          description: Fecha de nacimiento del usuario
       type: object
       x-examples:
         example-1:
