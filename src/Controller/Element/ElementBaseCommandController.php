@@ -190,7 +190,7 @@ abstract class ElementBaseCommandController
      * @param string $value
      * @return int
      */
-    private function findIdByName(string $entityName, string $value): int
+    protected function findIdByName(string $entityName, string $value): int
     {
         /** @var ?Element $element */
         $element = $this->entityManager->getRepository($entityName)->findOneBy([ 'name' => $value ]);
