@@ -88,6 +88,17 @@ final class AsociacionRelationsController extends ElementRelationsBaseController
             ->withHeader('Allow', implode(',', $methods));
     }
 
+    public function optionsRelation($request, $response, $args): Response
+    {
+        return $response
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+            ->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+            ->withStatus(204);
+    }
+
+
+
 
     public function operationEntity(Request $request, Response $response, array $args): Response
     {
