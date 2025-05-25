@@ -203,7 +203,7 @@ abstract class ElementBaseCommandController
      * @param ElementInterface $element
      * @param array<string,string> $data
      */
-    private function updateElement(ElementInterface $element, array $data): void
+    protected function updateElement(ElementInterface $element, array $data): void
     {
         foreach ($data as $attr => $datum) {
             switch ($attr) {

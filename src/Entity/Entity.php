@@ -32,9 +32,12 @@ class Entity extends Element
     #[ORM\OrderBy([ "id" => "ASC" ])]
     protected Collection $products;
 
+
     /* Añadido para la relacion inversa con Asociacion*/
     #[ORM\ManyToMany(targetEntity: Asociacion::class, mappedBy: 'entidades')]
     private Collection $asociaciones;
+
+
 
     /**
      * Entity constructor.
@@ -162,6 +165,28 @@ class Entity extends Element
         return $result;
     }
 
+    public function getAsociaciones(): Collection
+    {
+        return $this->asociaciones;
+    }
+
+    public function addAsociacion(Asociacion $asociacion): void
+    {
+        if (!$this->asociaciones->contains($asociacion)) {
+            $this->asociaciones->add($asociacion);
+            $asociacion->addEntity($this);  // sincronizar lado inverso
+        }
+    }
+
+    public function removeAsociacion(Asociacion $asociacion): void
+    {
+        if ($this->asociaciones->removeElement($asociacion)) {
+            $asociacion->removeEntity($this);  // sincronizar lado inverso
+        }
+    }
+
+
+
     /**
      * @see \Stringable
      */
@@ -188,6 +213,8 @@ class Entity extends Element
         $data['products'] = $numProducts !== 0 ? $this->getCodes($this->getProducts()) : null;
         $numPersons = count($this->getPersons());
         $data['persons'] = $numPersons !== 0 ? $this->getCodes($this->getPersons()) : null;
+        $numAsociaciones = count($this->getAsociaciones());
+        $data['asociaciones'] = $numAsociaciones !== 0 ? $this->getCodes($this->getAsociaciones()) : null;
 
         return [strtolower($reflection->getShortName()) => $data];
     }

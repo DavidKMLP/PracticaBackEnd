@@ -138,4 +138,14 @@ final class EntityRelationsController extends ElementRelationsBaseController
             ProductQueryController::getEntityClassName()
         );
     }
+
+    public function operationAsociacion(Request $request, Response $response, array $args): Response
+    {
+        return $this->operationRelatedElements(
+            $request,
+            $response,
+            $args,
+            \TDW\ACiencia\Entity\Asociacion::class
+        );
+    }
 }

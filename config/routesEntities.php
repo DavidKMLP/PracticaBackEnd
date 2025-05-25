@@ -8,7 +8,7 @@
  */
 
 use Slim\App;
-use TDW\ACiencia\Controller\Entity\{ EntityCommandController, EntityQueryController, EntityRelationsController };
+use TDW\ACiencia\Controller\Entity\{EntityCommandController, EntityQueryController, EntityRelationsController};
 use TDW\ACiencia\Middleware\JwtMiddleware;
 
 /**
@@ -26,7 +26,7 @@ return function (App $app) {
 
     // CGET|HEAD: Returns all entities
     $app->map(
-        [ 'GET', 'HEAD' ],
+        ['GET', 'HEAD'],
         $_ENV['RUTA_API'] . EntityQueryController::PATH_ENTITIES,
         EntityQueryController::class . ':cget'
     )->setName('readEntities');
@@ -34,7 +34,7 @@ return function (App $app) {
 
     // GET|HEAD: Returns a entity based on a single ID
     $app->map(
-        [ 'GET', 'HEAD' ],
+        ['GET', 'HEAD'],
         $_ENV['RUTA_API'] . EntityQueryController::PATH_ENTITIES . $REGEX_ENTITY_ID,
         EntityQueryController::class . ':get'
     )->setName('readEntity');
@@ -111,7 +111,7 @@ return function (App $app) {
     // PUT /entities/{entityId}/products/add/{elementId}
     $app->put(
         $_ENV['RUTA_API'] . EntityCommandController::PATH_ENTITIES . $REGEX_ENTITY_ID
-            . '/products/add' . $REGEX_ELEMENT_ID,
+        . '/products/add' . $REGEX_ELEMENT_ID,
         EntityRelationsController::class . ':operationProduct'
     )->setName('tdw_entities_add_product')
         ->add(JwtMiddleware::class);
@@ -123,4 +123,23 @@ return function (App $app) {
         EntityRelationsController::class . ':operationProduct'
     )->setName('tdw_entities_rem_product')
         ->add(JwtMiddleware::class);
+
+    // PUT /entities/{entityId}/asociaciones/add/{elementId}
+    $app->put(
+        $_ENV['RUTA_API'] . EntityCommandController::PATH_ENTITIES . $REGEX_ENTITY_ID
+        . '/asociaciones/add' . $REGEX_ELEMENT_ID,
+        EntityRelationsController::class . ':operationAsociacion'
+    )->setName('tdw_entities_add_asociacion')
+        ->add(JwtMiddleware::class);
+
+    // PUT /entities/{entityId}/asociaciones/rem/{elementId}
+    $app->put(
+        $_ENV['RUTA_API'] . EntityCommandController::PATH_ENTITIES . $REGEX_ENTITY_ID
+        . '/asociaciones/rem' . $REGEX_ELEMENT_ID,
+        EntityRelationsController::class . ':operationAsociacion'
+    )->setName('tdw_entities_rem_asociacion')
+        ->add(JwtMiddleware::class);
+
+
+
 };

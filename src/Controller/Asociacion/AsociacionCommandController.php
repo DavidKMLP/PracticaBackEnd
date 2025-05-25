@@ -119,7 +119,7 @@ class AsociacionCommandController extends ElementBaseCommandController
             ->withJson(['asociacion' => $element]);
     }
 
-    private function updateElement(Asociacion $a, array $data): void
+    protected function updateElement(Asociacion|\TDW\ACiencia\Entity\ElementInterface $a, array $data): void
     {
         foreach ($data as $attr => $datum) {
             switch ($attr) {
